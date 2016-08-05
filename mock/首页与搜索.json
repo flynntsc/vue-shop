@@ -1,0 +1,61 @@
+{
+    "hot-pros": {
+        "EXPLAIN": "首页热销产品",
+        "rows": [{
+            "image": "http://temp.im/100",
+            "name": "高健雄产品名称",
+            "price": 3747
+        }]
+    },
+    "new-pros": {
+        "EXPLAIN": "首页新品产品",
+        "rows": [{
+            "image": "http://temp.im/100",
+            "name": "罗君浩产品名称",
+            "price": 8037
+        }]
+    },
+    "lov-pros": {
+        "EXPLAIN": "首页猜你喜欢",
+        "rows": [{
+            "image": "http://temp.im/100",
+            "name": "任天宇产品名称",
+            "price": 5284
+        }]
+    },
+    "cat1-pros": {
+        "EXPLAIN": "首页机油分类产品",
+        "rows": [{
+            "image": "http://temp.im/100",
+            "name": "钱擎苍产品名称",
+            "price": 833
+        }]
+    },
+    "search-pros-title": {
+        "EXPLAIN": "搜索引申关键字-商品",
+        "rows": [{
+            "title": "苏昊强产品名称"
+        }]
+    },
+    "search-shop-title": {
+        "EXPLAIN": "搜索引申关键字-店铺",
+        "rows": [{
+            "title": "姜炫明店铺名称"
+        }]
+    },
+    "search-pros": {
+        "EXPLAIN": "关键词搜索结果-商品",
+        "rows": [{
+            "image": "http://temp.im/100",
+            "name": "钟胤祥产品名称",
+            "price": 9011,
+            "num": 36
+        }]
+    },
+    "search-shop": {
+        "EXPLAIN": "关键词搜索结果-店铺",
+        "rows": [{
+            "title": "武瑞霖店铺名称"
+        }]
+    }
+}
