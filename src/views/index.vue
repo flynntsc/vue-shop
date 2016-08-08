@@ -101,8 +101,8 @@
                         <img :src="items.image" :alt="items.name" class="img">
                     </div>
                     <div class="bd">
-                        <div class="name">{{items.name}}</div>
                         <div class="pri">￥{{items.price}}</div>
+                        <div class="name">{{items.name}}</div>
                     </div>
                 </div>
             </div>
@@ -118,8 +118,8 @@
                         <img :src="items.image" :alt="items.name" class="img">
                     </div>
                     <div class="bd">
-                        <div class="name">{{items.name}}</div>
                         <div class="pri">￥{{items.price}}</div>
+                        <div class="name">{{items.name}}</div>
                     </div>
                 </div>
             </div>
@@ -135,8 +135,8 @@
                         <img :src="items.image" :alt="items.name" class="img">
                     </div>
                     <div class="bd">
-                        <div class="name">{{items.name}}</div>
                         <div class="pri">￥{{items.price}}</div>
+                        <div class="name">{{items.name}}</div>
                     </div>
                 </div>
             </div>
@@ -161,8 +161,8 @@
                         <img :src="items.image" :alt="items.name" class="img">
                     </div>
                     <div class="bd">
-                        <div class="name">{{items.name}}</div>
                         <div class="pri">￥{{items.price}}</div>
+                        <div class="name">{{items.name}}</div>
                     </div>
                 </div>
             </div>
@@ -279,7 +279,7 @@ export default {
         },
         // 点击关键词
         resultClick(val) {
-            // 将搜索词保存
+            // 将搜索词保存=>需限制数量！！！
             let addHisWord = itemName => {
                 let saveStr = localStorage.getItem(itemName)
                 if (!saveStr) {

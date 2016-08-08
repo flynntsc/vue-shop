@@ -6,6 +6,8 @@
             <search-cat @result-click="resultClick" @on-change="getResult" @del-history="delHistory" :results="results" :value.sync="searchVal" :cats="catsArr" :cats-val.sync="catsVal" :placeholder="searchPhr"></search-cat>
         </div>
     </div>
+
+    <!-- 商品 -->
     <div class="v-prolist" v-show="catsVal === '商品'">
         <tab>
             <tab-item :selected="this.tabProsNum === 0" @click="tabFn(0)">销售量</tab-item>
@@ -26,6 +28,8 @@
             </div>
         </div>
     </div>
+
+    <!-- 店铺 -->
     <div class="v-shoplist" v-show="catsVal === '店铺'">
         <tab>
             <tab-item :selected="this.tabShopNum === 0">销售量</tab-item>
@@ -33,8 +37,20 @@
         </tab>
         <div class="v-sbd">
             <div class="v-shop" v-for="items of shopList">
-                <div class="shophd">111111</div>
-                <div class="shopbd">2222</div>
+                <div class="v-shophd" v-link="{path:items.url}">
+                    <div class="logo">
+                        <img :src="items.logo" :alt="items.name" class="img">
+                    </div>
+                    <div class="detail">
+                        <div class="name">{{items.name}}</div>
+                        <span class="sales">销量{{items.sales}}</span>
+                        <span class="total">共{{items.total}}件商品</span>
+                    </div>
+                    <div class="entry">
+                        <button class="weui_btn weui_btn_mini weui_btn_default weui_btn_plain_default">进入店铺</button>
+                    </div>
+                </div>
+                <div class="v-shopbd">2222</div>
             </div>
         </div>
     </div>
@@ -80,7 +96,6 @@ export default {
                 if (!res.data) return
 
                 let rows = JSON.parse(res.data).rows;
-
                 !type ? this.prosList = rows : this.shopList = rows
             })
         }
@@ -88,11 +103,8 @@ export default {
         // 初始化数据结果
         let sort = this.$route.query.sort || 0
         this.searchPhr = this.searchVal = this.$route.query.word || ''
-
-        // 数据更改了但无变化？？？？？？？？？
-        this.catVal = this.$route.query.type || '商品'
-
-        this.catVal === '店铺' ? getRes('search-shop', sort, 1) : getRes('search-pros', sort)
+        this.catsVal = this.$route.query.type || '商品'
+        this.catsVal === '店铺' ? getRes('search-shop', sort, 1) : getRes('search-pros', sort)
     },
     methods: {
         // 返回
@@ -109,9 +121,9 @@ export default {
             })
         },
         // 删除搜索历史
-        delHistory(catVal) {
+        delHistory(catsVal) {
             this.results = []
-            catVal === '店铺' ? localStorage.setItem('wehgc-shop', '') : localStorage.setItem('wehgc-pros', '')
+            catsVal === '店铺' ? localStorage.setItem('wehgc-shop', '') : localStorage.setItem('wehgc-pros', '')
         },
         getResult() {
             // 显示搜索历史词
@@ -275,7 +287,35 @@ export default {
 // 店铺列表
 .v-shop {
     border-bottom: 2px solid #ccc;
+    padding: 10px;
 }
+
+// 店铺列表
+.v-shophd {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .logo {
+        .img {
+            width: 50px;
+        }
+    }
+    .detail {
+        padding: 0 10px;
+        .name {
+            font-size: 18px;
+        }
+        .sales {
+            font-size: 14px;
+        }
+        .total {
+            font-size: 14px;
+        }
+    }
+    .entry {}
+}
+
+.v-shopbd {}
 </style>
 <style lang="scss">
 // 修改组件样式

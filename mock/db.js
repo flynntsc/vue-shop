@@ -45,6 +45,7 @@ const myAbbr = () => faker.address.stateAbbr();
 const myCompany = () => faker.name.firstName() + faker.name.lastName() + '有限公司';
 const myShop = () => faker.name.firstName() + faker.name.lastName() + '店铺名称';
 const myPro = () => faker.name.firstName() + faker.name.lastName() + '产品名称';
+const myStr = (str = '') => faker.name.firstName() + faker.name.lastName() + str;
 const myWords = () => faker.random.words();
 const myImg = (num = 100) => 'http://temp.im/' + num;
 const myDate = () => {
@@ -74,14 +75,14 @@ const isHave = ['有', '无']
 
 
 // 产品名
-function searchPros() {
+function searchProsTitle() {
     return {
         title: myPro(),
     }
 }
 
 // 店铺名
-function searchShop() {
+function searchShopTitle() {
     return {
         title: myShop(),
     }
@@ -100,9 +101,33 @@ function prosList2() {
     return {
         url: '/category/product/url',
         image: myImg(),
-        name: myPro(),
+        name: myStr('产品名称'),
         price: myNum2(),
         num: myDay(),
+    }
+}
+// 店铺信息
+function shopList() {
+    return {
+        url: '#',
+        logo: myImg(80),
+        name: myStr('店铺名称'),
+        sales: myDay(),
+        total: myNum2(),
+        isSenior: iBoolean.random(),
+        list: [{
+            url: '#',
+            image: myImg(100)
+        }, {
+            url: '#',
+            image: myImg(100)
+        }, {
+            url: '#',
+            image: myImg(100)
+        }, {
+            url: '#',
+            image: myImg(100)
+        }]
     }
 }
 
@@ -130,11 +155,11 @@ module.exports = function () {
         // 搜索
         'search-pros-title': {
             EXPLAIN: '搜索引申关键字-商品',
-            rows: eachFn(searchPros)
+            rows: eachFn(searchProsTitle)
         },
         'search-shop-title': {
             EXPLAIN: '搜索引申关键字-店铺',
-            rows: eachFn(searchShop)
+            rows: eachFn(searchShopTitle)
         },
         'search-pros': {
             EXPLAIN: '关键词搜索结果-商品(默认销售量排序)',
@@ -144,7 +169,7 @@ module.exports = function () {
         'search-shop': {
             EXPLAIN: '关键词搜索结果-店铺',
             ARGUMENT: '关键词（word=关键词）、销售量（sort=0）、店铺评分（sort=1）',
-            rows: eachFn(searchShop, 6)
+            rows: eachFn(shopList, 6)
         },
     }
 }
