@@ -15,16 +15,12 @@
 
     <!-- 广告图 -->
     <div class="v-banner">
-        <div class="lban">
-            <img src="http://temp.im/160x320" alt="">
-        </div>
+        <div class="lban" style="background:url('http://temp.im/160x320') no-repeat 50% 50% / 100% auto"></div>
         <div class="rban">
-            <div class="rhd">
-                <img src="http://temp.im/160" alt="">
-            </div>
+            <div class="rhd" style="background:url('http://temp.im/160') no-repeat 50% 50% / 100% auto"></div>
             <div class="rbd">
-                <img src="http://temp.im/80x160" alt="">
-                <img src="http://temp.im/80x160" alt="">
+                <div class="sbd" style="background:url('http://temp.im/80x160') no-repeat 50% 50% / 100% auto"></div>
+                <div class="sbd" style="background:url('http://temp.im/80x160') no-repeat 50% 50% / 100% auto"></div>
             </div>
         </div>
     </div>
@@ -356,22 +352,46 @@ export default {
 // 广告
 .v-banner {
     display: flex;
+    width: 100%;
+    background-color: #fff;
     .lban {
         flex: 1;
-        height: 320px;
-    }
-    img {
-        width: 100%;
+        padding-bottom: 100%;
         height: 100%;
     }
-    .rhd {
-        height: 160px;
-    }
-    .rbd {
-        display: flex;
+    .rban {
+        flex: 1;
+        .rhd {
+            width: 100%;
+            padding-bottom: 100%;
+        }
+        .rbd {
+            display: flex;
+            .sbd {
+                flex: 1;
+                padding-bottom: 100%;
+            }
+        }
     }
 }
 
+// .v-banner {
+//     display: flex;
+//     .lban {
+//         flex: 1;
+//         height: 320px;
+//     }
+//     img {
+//         width: 100%;
+//         height: 100%;
+//     }
+//     .rhd {
+//         height: 160px;
+//     }
+//     .rbd {
+//         display: flex;
+//     }
+// }
 // 菜单
 .v-nav {
     .item {

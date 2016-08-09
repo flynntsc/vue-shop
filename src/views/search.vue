@@ -10,9 +10,9 @@
     <!-- 商品 -->
     <div class="v-prolist" v-show="catsVal === '商品'">
         <tab>
-            <tab-item :selected="this.tabProsNum === 0" @click="tabFn(0)">销售量</tab-item>
-            <tab-item :selected="this.tabProsNum === 1" @click="tabFn(1)">新品</tab-item>
-            <tab-item :selected="this.tabProsNum === 2" @click="tabFn(2)">价格</tab-item>
+            <tab-item :selected="this.tabProsNum === 0" @click="tabProsFn(0)">销售量</tab-item>
+            <tab-item :selected="this.tabProsNum === 1" @click="tabProsFn(1)">新品</tab-item>
+            <tab-item :selected="this.tabProsNum === 2" @click="tabProsFn(2)">价格</tab-item>
         </tab>
         <div class="v-pbd">
             <div class="v-pro" v-for="items of prosList">
@@ -32,25 +32,29 @@
     <!-- 店铺 -->
     <div class="v-shoplist" v-show="catsVal === '店铺'">
         <tab>
-            <tab-item :selected="this.tabShopNum === 0">销售量</tab-item>
-            <tab-item :selected="this.tabShopNum === 1">店铺评分</tab-item>
+            <tab-item :selected="this.tabShopNum === 0" @click="tabShopFn(0)">销售量</tab-item>
+            <tab-item :selected="this.tabShopNum === 1" @click="tabShopFn(1)">店铺评分</tab-item>
         </tab>
         <div class="v-sbd">
             <div class="v-shop" v-for="items of shopList">
                 <div class="v-shophd" v-link="{path:items.url}">
-                    <div class="logo">
+                    <div class="info">
                         <img :src="items.logo" :alt="items.name" class="img">
-                    </div>
-                    <div class="detail">
-                        <div class="name">{{items.name}}</div>
-                        <span class="sales">销量{{items.sales}}</span>
-                        <span class="total">共{{items.total}}件商品</span>
+                        <div class="detail">
+                            <div class="name">{{items.name}}</div>
+                            <div class="num">
+                                <span class="sales">销量{{items.sales}}</span>
+                                <span class="total">共{{items.total}}件商品</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="entry">
-                        <button class="weui_btn weui_btn_mini weui_btn_default weui_btn_plain_default">进入店铺</button>
+                        <button class="weui_btn weui_btn_mini weui_btn_default weui_btn_plain_default btn" v-link="{path:items.url}">进入店铺</button>
                     </div>
                 </div>
-                <div class="v-shopbd">2222</div>
+                <div class="v-shopbd">
+                    <div class="pro" v-for="item of items.list"><img :src="item.image" alt="" class="img"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -181,7 +185,9 @@ export default {
                     localStorage.setItem(itemName, val.title)
                 } else {
                     let newStr = val.title
-                    if (saveStr.split(',').indexOf(newStr) === -1) {
+                    let arr = saveStr.split(',')
+                    if (arr.indexOf(newStr) === -1) {
+                        saveStr = arr.slice(-9).join(',')
                         localStorage.setItem(itemName, saveStr + ',' + newStr)
                     }
                 }
@@ -190,15 +196,15 @@ export default {
             if (this.catsVal === '店铺') {
                 addHisWord('wehgc-shop')
                 this.searchVal = val.title
-                    // this.$router.go('/search-shop')
+                this.tabShopFn(this.tabShopNum)
             } else {
                 addHisWord('wehgc-pros')
                 this.searchVal = val.title
-                this.tabFn(this.tabProsNum)
+                this.tabProsFn(this.tabProsNum)
             }
         },
         // tab切换显示-商品
-        tabFn(n) {
+        tabProsFn(n) {
             let num = n || 0,
                 arg = '',
                 url = ''
@@ -215,6 +221,17 @@ export default {
                 if (!res.data) return
 
                 this.prosList = JSON.parse(res.data).rows
+            })
+        },
+        tabShopFn(n) {
+            let num = n || 0,
+                url = ''
+            this.tabShopNum = num
+            url = `/api/search-shop?word=${this.searchVal}&sort=${num}`
+            this.$http.get(url).then(res => {
+                if (!res.data) return
+
+                this.shopList = JSON.parse(res.data).rows
             })
         },
     }
@@ -245,7 +262,7 @@ export default {
 // 产品列表
 .v-pro {
     box-sizing: border-box;
-    border-bottom: 2px solid #ccc;
+    border-bottom: 5px solid #efefef;
     padding: 10px;
     .lbox {
         float: left;
@@ -286,7 +303,7 @@ export default {
 
 // 店铺列表
 .v-shop {
-    border-bottom: 2px solid #ccc;
+    border-bottom: 5px solid #efefef;
     padding: 10px;
 }
 
@@ -295,24 +312,56 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .logo {
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #efefef;
+    .info {
         .img {
+            float: left;
             width: 50px;
         }
+        .detail {
+            margin-left: 60px;
+            .name {
+                overflow: hidden;
+                height: 28px;
+                line-height: 28px;
+                white-space: normal;
+                font-size: 18px;
+            }
+            .num {
+                overflow: hidden;
+                height: 22px;
+                line-height: 22px;
+                white-space: normal;
+                .sales {
+                    font-size: 14px;
+                }
+                .total {
+                    font-size: 14px;
+                }
+            }
+        }
     }
-    .detail {
-        padding: 0 10px;
-        .name {
-            font-size: 18px;
-        }
-        .sales {
-            font-size: 14px;
-        }
-        .total {
-            font-size: 14px;
+    .entry {
+        width: 80px;
+        .btn {
+            white-space: nowrap;
         }
     }
-    .entry {}
+}
+
+.v-shopbd {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .pro {
+        width: 24%;
+        .img {
+            width: 100%;
+            height: 100%;
+        }
+    }
 }
 
 .v-shopbd {}
