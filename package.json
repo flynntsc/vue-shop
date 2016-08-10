@@ -5,9 +5,9 @@
     "author": "flynntsc <flynntsc@qq.com>",
     "private": true,
     "scripts": {
-        "dev": "node build/dev-server.js",
+        "dev": "nodemon --watch config/ --exec node build/dev-server.js",
         "build": "node build/build.js",
-        "mock": "nodemon --watch ./mock/ --exec json-server mock/db.js --routes mock/routes.json --port 3000",
+        "mock": "nodemon --watch mock/ --exec json-server mock/db.js --routes mock/routes.json --port 3000",
         "test": ""
     },
     "dependencies": {

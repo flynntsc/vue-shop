@@ -96,11 +96,11 @@ export default {
     ready() {
         // 根据url参数请求相应数据
         let getRes = (url, sort, type = 0) => {
-            this.$http.get(`/api/${url}?word=${this.searchVal}&sort=${sort}`).then(res => {
-                if (!res.data) return
-
-                let rows = JSON.parse(res.data).rows;
-                !type ? this.prosList = rows : this.shopList = rows
+            this.$http.get(`/app/shopping/${url}?word=${this.searchVal}&sort=${sort}`).then(res => {
+                if (res.ok) {
+                    let rows = JSON.parse(res.data).rows;
+                    !type ? this.prosList = rows : this.shopList = rows
+                }
             })
         }
 
@@ -108,7 +108,7 @@ export default {
         let sort = this.$route.query.sort || 0
         this.searchPhr = this.searchVal = this.$route.query.word || ''
         this.catsVal = this.$route.query.type || '商品'
-        this.catsVal === '店铺' ? getRes('search-shop', sort, 1) : getRes('search-pros', sort)
+        this.catsVal === '店铺' ? getRes('storeSearch.htm', sort, 1) : getRes('productSearch.htm', sort)
     },
     methods: {
         // 返回
@@ -140,17 +140,17 @@ export default {
 
             // ajax获取数据
             let getData = url => {
-                this.$http.get(url).then(res => {
-                    if (res.data) {
+                this.$http.get(url + '?keyWords=' + this.searchVal).then(res => {
+                    if (res.ok) {
                         this.results = JSON.parse(res.data).rows
                     }
                 })
             }
 
             if (this.catsVal === '店铺') {
-                getData('api/search-shop')
+                getData('/app/shopping/productKeySearch.htm')
             } else {
-                getData('api/search-pros')
+                getData('/app/shopping/storeKeySearch.htm')
             }
         },
         getResult() {
@@ -164,17 +164,17 @@ export default {
 
             // ajax获取数据
             let getData = url => {
-                this.$http.get(url).then(res => {
-                    if (res.data) {
+                this.$http.get(url + '?keyWords=' + this.searchVal).then(res => {
+                    if (res.ok) {
                         this.results = JSON.parse(res.data).rows
                     }
                 })
             }
 
             if (this.catsVal === '店铺') {
-                getData('api/search-shop-title')
+                getData('/app/shopping/storeKeySearch.htm')
             } else {
-                getData('api/search-pros-title')
+                getData('/app/shopping/productKeySearch.htm')
             }
         },
         resultClick(val) {
@@ -216,22 +216,22 @@ export default {
                 arg = `&order=${this.tabPrice}`
             }
             this.tabProsNum = num
-            url = `/api/search-pros?word=${this.searchVal}&sort=${num + arg}`
+            url = `/app/shopping/productSearch.htm?word=${this.searchVal}&sort=${num + arg}`
             this.$http.get(url).then(res => {
-                if (!res.data) return
-
-                this.prosList = JSON.parse(res.data).rows
+                if (res.ok) {
+                    this.prosList = JSON.parse(res.data).rows
+                }
             })
         },
         tabShopFn(n) {
             let num = n || 0,
                 url = ''
             this.tabShopNum = num
-            url = `/api/search-shop?word=${this.searchVal}&sort=${num}`
+            url = `/app/shopping/storeSearch.htm?word=${this.searchVal}&sort=${num}`
             this.$http.get(url).then(res => {
-                if (!res.data) return
-
-                this.shopList = JSON.parse(res.data).rows
+                if (res.ok) {
+                    this.shopList = JSON.parse(res.data).rows
+                }
             })
         },
     }

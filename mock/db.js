@@ -135,39 +135,41 @@ function shopList() {
 module.exports = function () {
     return {
         // 首页
-        'hot-pros': {
+        'index.htm': {
             EXPLAIN: '首页热销产品',
             res: 200,
             rows: eachFn(prosList1, 6)
         },
-        'new-pros': {
+        'new_products.htm': {
             EXPLAIN: '首页新品产品',
             rows: eachFn(prosList1, 6)
         },
-        'lov-pros': {
+        'like_products.htm': {
             EXPLAIN: '首页猜你喜欢',
             rows: eachFn(prosList1, 6)
         },
-        'cat1-pros': {
+        'cat1-pros.htm': {
             EXPLAIN: '首页机油分类产品',
             rows: eachFn(prosList1, 6)
         },
         // 搜索
-        'search-pros-title': {
+        'productKeySearch.htm': {
             EXPLAIN: '搜索引申关键字-商品',
+            ARGUMENT: '输入词（keyWords=输入词）',
             rows: eachFn(searchProsTitle)
         },
-        'search-shop-title': {
+        'storeKeySearch.htm': {
             EXPLAIN: '搜索引申关键字-店铺',
+            ARGUMENT: '输入词（keyWords=输入词）',
             rows: eachFn(searchShopTitle)
         },
-        'search-pros': {
+        'productSearch.htm': {
             EXPLAIN: '关键词搜索结果-商品(默认销售量排序)',
             ARGUMENT: '关键词（word=关键词）、销售量（sort=0）、新品（sort=1）、价格低到高（sort=2&order=0）、价格高到低（sort=2&order=1）',
             rows: eachFn(prosList2, 6)
         },
-        'search-shop': {
-            EXPLAIN: '关键词搜索结果-店铺',
+        'storeSearch.htm': {
+            EXPLAIN: '关键词搜索结果-店铺(默认销售量排序)',
             ARGUMENT: '关键词（word=关键词）、销售量（sort=0）、店铺评分（sort=1）',
             rows: eachFn(shopList, 6)
         },

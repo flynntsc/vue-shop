@@ -14,12 +14,14 @@ export default {
             }
         },
         created() {
-            const isIn = localStorage.getItem('isIn') || false;
-            if (isIn) {
-                this.$route.router.go('/index')
-            } else {
-                this.$route.router.go('/login')
-            }
+            this.$route.router.go('/index')
+
+            // const isIn = localStorage.getItem('isIn') || false;
+            // if (isIn) {
+            //     this.$route.router.go('/index')
+            // } else {
+            //     this.$route.router.go('/login')
+            // }
         },
         components: {
             Loading,

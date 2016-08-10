@@ -1,6 +1,26 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
+// 切换数据来源=本地虚拟/线上提供
+var isNode = 1
+var proxyTable = isNode ? {
+    // proxy all requests starting with /api to jsonplaceholder
+    '/app/shopping': {
+        // http://jsonplaceholder.typicode.com or http://api.icndb.com/jokes/random
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        pathRewrite: {
+            '^/app/shopping': ''
+        }
+    }
+} : {
+    '/app/shopping': {
+        target: 'http://10.1.6.80:8088/hczd-club',
+        changeOrigin: true,
+        pathRewrite: {}
+    }
+}
+
 module.exports = {
     build: {
         env: require('./prod.env'),
@@ -21,17 +41,7 @@ module.exports = {
         port: 8080,
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
-        proxyTable: {
-            // proxy all requests starting with /api to jsonplaceholder
-            '/api': {
-                // http://jsonplaceholder.typicode.com or http://api.icndb.com/jokes/random
-                target: 'http://localhost:3000',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/api': ''
-                }
-            }
-        },
+        proxyTable: proxyTable,
         // CSS Sourcemaps off by default because relative paths are "buggy"
         // with this option, according to the CSS-Loader README
         // (https://github.com/webpack/css-loader#sourcemaps)

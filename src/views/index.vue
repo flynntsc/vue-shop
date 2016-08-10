@@ -219,19 +219,19 @@ export default {
     },
     ready() {
         // 初始化热销产品
-        this.$http.get('/api/hot-pros').then(res => {
-            if (!res.data) return
-
-            this.hotPros = JSON.parse(res.data).rows
-            this.disHot = false
+        this.$http.get('/app/shopping/index.htm').then(res => {
+            if (res.ok) {
+                this.hotPros = JSON.parse(res.data).rows
+                this.disHot = false
+            }
         })
 
         // 初始化机油产品
-        this.$http.get('/api/cat1-pros').then(res => {
-            if (!res.data) return
-
-            this.cat1Pros = JSON.parse(res.data).rows
-            this.disCat1 = false
+        this.$http.get('/app/shopping/index.htm').then(res => {
+            if (res.ok) {
+                this.cat1Pros = JSON.parse(res.data).rows
+                this.disCat1 = false
+            }
         })
     },
     methods: {
@@ -260,17 +260,17 @@ export default {
 
             // ajax获取数据
             let getData = url => {
-                this.$http.get(url).then(res => {
-                    if (res.data) {
+                this.$http.get(url + '?keyWords=' + this.searchVal).then(res => {
+                    if (res.ok) {
                         this.results = JSON.parse(res.data).rows
                     }
                 })
             }
 
             if (this.catsVal === '店铺') {
-                getData('api/search-shop-title')
+                getData('/app/shopping/storeKeySearch.htm')
             } else {
-                getData('api/search-pros-title')
+                getData('/app/shopping/productKeySearch.htm')
             }
         },
         // 点击关键词
@@ -294,23 +294,24 @@ export default {
         tabNewSel() {
             this.tabSel = 1
             if (this.disNew) {
-                this.$http.get('/api/new-pros').then(res => {
-                    if (!res.data) return
-
-                    this.newPros = JSON.parse(res.data).rows
-                    this.disNew = false
+                this.$http.get('/app/shopping/new_products.htm').then(res => {
+                    if (res.ok) {
+                        this.newPros = JSON.parse(res.data).rows
+                        this.disNew = false
+                    }
                 })
             }
         },
         tabLovSel() {
             this.tabSel = 2
             if (this.disLov) {
-                this.$http.get('/api/lov-pros').then(res => {
-                    if (!res.data) return
-
-                    this.lovPros = JSON.parse(res.data).rows
-                    this.disLov = false
-                })
+                this.$http
+                    .get('/app/shopping/like_products.htm').then(res => {
+                        if (res.ok) {
+                            this.lovPros = JSON.parse(res.data).rows
+                            this.disLov = false
+                        }
+                    })
             }
         },
     },

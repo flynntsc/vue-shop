@@ -1,9 +1,11 @@
 <template>
     <div class="vux-search-box">
         <div class="weui_search_bar" id="search_bar" :class="{weui_search_focusing: !isCancel}">
-            <select name="" id="" class="vux-search-cat" v-model="catsVal" v-show="isFixed">
-                <option v-for="(key,item) in cats" :value="item" :selected="item == catsVal">{{item}}</option>
-            </select>
+            <div class="v-search-box">
+                <select name="" id="" class="vux-search-cat" v-model="catsVal" v-show="isFixed">
+                    <option v-for="(key,item) in cats" :value="item" :selected="item == catsVal">{{item}}</option>
+                </select>
+            </div>
             <form class="weui_search_outer" @submit.prevent="$emit('on-submit', value)">
                 <div class="vux-search-mask" @click="touch" v-show="!isFixed"></div>
                 <div class="weui_search_inner">
@@ -141,6 +143,10 @@ export default {
     z-index: 5;
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(5px);
+    .weui_search_outer:after {
+        border-radius: 0 10px 10px 0;
+        border-left: 0 none;
+    }
 }
 
 .vux-search-box {
@@ -163,11 +169,41 @@ export default {
 }
 
 .vux-search-cat {
+    position: relative;
+    display: block;
+    height: 28px;
+    line-height: 28px;
+    appearance: none;
+    padding: 0 10px 0 5px;
+    border: 0 none;
+    border-radius: 0;
     font-size: 16px;
-    color: #fff;
+    background-color: #fff;
+    color: #888;
 }
 </style>
 <style lang="scss" scoped>
+.v-search-box {
+    display: none;
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        border-top: 4px solid #666;
+        border-right: 4px solid transparent;
+        border-left: 4px solid transparent;
+    }
+}
+
+.vux-search-fixed {
+    .v-search-box {
+        display: block;
+    }
+}
+
 .weui_search_bar {
     background-color: #c50a1d;
 }
