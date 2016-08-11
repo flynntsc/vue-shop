@@ -15,17 +15,7 @@
             <tab-item :selected="this.tabProsNum === 2" @click="tabProsFn(2)">价格</tab-item>
         </tab>
         <div class="v-pbd">
-            <div class="v-pro" v-for="items of prosList">
-                <div class="lbox">
-                    <img :src="items.image" :alt="items.name" class="img">
-                </div>
-                <div class="rbox">
-                    <div class="name">{{items.name}}</div>
-                    <div class="price">￥{{items.price}}</div>
-                    <div class="num">月销量{{items.num}}件</div>
-                    <div class="cart"><i class="iconfont">&#xe601;</i></div>
-                </div>
-            </div>
+            <products-list :proslist="prosList"></products-list>
         </div>
     </div>
 
@@ -67,12 +57,14 @@ import {
     TabItem,
 } from 'vux/src/components';
 import SearchCat from '../components/search-cat/index.vue'
+import ProductsList from '../components/products-list/index.vue'
 
 export default {
     components: {
         SearchCat,
         Tab,
         TabItem,
+        ProductsList,
     },
     data() {
         return {
@@ -257,48 +249,6 @@ export default {
     line-height: 44px;
     text-align: center;
     color: #fff;
-}
-
-// 产品列表
-.v-pro {
-    box-sizing: border-box;
-    border-bottom: 5px solid #efefef;
-    padding: 10px;
-    .lbox {
-        float: left;
-        width: 100px;
-        .img {
-            width: 100%;
-        }
-    }
-    .rbox {
-        position: relative;
-        height: 100px;
-        margin-left: 110px;
-        .name {
-            height: 48px;
-            line-height: 24px;
-            overflow: hidden;
-        }
-        .price {
-            line-height: 32px;
-            font-size: 18px;
-            color: #f00;
-        }
-        .num {
-            line-height: 20px;
-            font-size: 14px;
-            color: #999;
-        }
-        .cart {
-            position: absolute;
-            bottom: 0;
-            right: 10px;
-            i {
-                font-size: 20px;
-            }
-        }
-    }
 }
 
 // 店铺列表

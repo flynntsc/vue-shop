@@ -1,61 +1,93 @@
 {
-    "hot-pros": {
+    "index.htm": {
         "EXPLAIN": "首页热销产品",
+        "res": 200,
         "rows": [{
+            "url": "/category/product/url",
             "image": "http://temp.im/100",
-            "name": "高健雄产品名称",
-            "price": 3747
+            "name": "谢果产品名称",
+            "price": 1228
         }]
     },
-    "new-pros": {
+    "new_products.htm": {
         "EXPLAIN": "首页新品产品",
         "rows": [{
+            "url": "/category/product/url",
             "image": "http://temp.im/100",
-            "name": "罗君浩产品名称",
-            "price": 8037
+            "name": "赖鸿煊产品名称",
+            "price": 2503
         }]
     },
-    "lov-pros": {
+    "like_products.htm": {
         "EXPLAIN": "首页猜你喜欢",
         "rows": [{
+            "url": "/category/product/url",
             "image": "http://temp.im/100",
-            "name": "任天宇产品名称",
-            "price": 5284
+            "name": "夏立轩产品名称",
+            "price": 6088
         }]
     },
-    "cat1-pros": {
+    "cat1-pros.htm": {
         "EXPLAIN": "首页机油分类产品",
         "rows": [{
+            "url": "/category/product/url",
             "image": "http://temp.im/100",
-            "name": "钱擎苍产品名称",
-            "price": 833
+            "name": "冯浩产品名称",
+            "price": 4986
         }]
     },
-    "search-pros-title": {
+    "productKeySearch.htm": {
         "EXPLAIN": "搜索引申关键字-商品",
+        "ARGUMENT": "输入词（keyWords=输入词）",
         "rows": [{
-            "title": "苏昊强产品名称"
+            "title": "谭晋鹏产品名称"
         }]
     },
-    "search-shop-title": {
+    "storeKeySearch.htm": {
         "EXPLAIN": "搜索引申关键字-店铺",
+        "ARGUMENT": "输入词（keyWords=输入词）",
         "rows": [{
-            "title": "姜炫明店铺名称"
+            "title": "曹煜祺店铺名称"
         }]
     },
-    "search-pros": {
-        "EXPLAIN": "关键词搜索结果-商品",
+    "productSearch.htm": {
+        "EXPLAIN": "关键词搜索结果-商品(默认销售量排序)",
+        "ARGUMENT": "关键词（word=关键词）、销售量（sort=0）、新品（sort=1）、价格低到高（sort=2&order=0）、价格高到低（sort=2&order=1）",
         "rows": [{
+            "url": "/category/product/url",
             "image": "http://temp.im/100",
-            "name": "钟胤祥产品名称",
-            "price": 9011,
-            "num": 36
+            "name": "邵昊天产品名称",
+            "price": 1747,
+            "sales": 5 // 月销量
         }]
     },
-    "search-shop": {
-        "EXPLAIN": "关键词搜索结果-店铺",
+    "storeSearch.htm": {
+        "EXPLAIN": "关键词搜索结果-店铺(默认销售量排序)",
+        "ARGUMENT": "关键词（word=关键词）、销售量（sort=0）、店铺评分（sort=1）",
         "rows": [{
-            "title": "武瑞霖店铺名称"
+            "url": "#",
+            "logo": "http://temp.im/80",
+            "name": "刘鑫磊店铺名称",
+            "sales": 39, // 销量
+            "total": 6399, // 产品总数
+            "isSenior": true, // 是否认证
+            "list": [{
+                "url": "#",
+                "name": "石君浩产品名称",
+                "image": "http://temp.im/100"
+            }, {
+                "url": "#",
+                "name": "贾炎彬产品名称",
+                "image": "http://temp.im/100"
+            }, {
+                "url": "#",
+                "name": "秦健柏产品名称",
+                "image": "http://temp.im/100"
+            }, {
+                "url": "#",
+                "name": "高炫明产品名称",
+                "image": "http://temp.im/100"
+            }]
         }]
     }
 }

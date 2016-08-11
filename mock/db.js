@@ -2,13 +2,13 @@
 const faker = require('faker/locale/zh_CN')
 
 // 是否只生成1个数值以便生成API
-const numConfig = 0
+const onlyOne = 0
 
 // 生成多个数据
 function eachFn(fn, num) {
     let arr = [],
         obj = {}
-    num = numConfig || num || 10
+    num = onlyOne || num || 10
     for(let i = 0; i < num; i++) {
         arr.push(fn.call(this));
     }
@@ -104,6 +104,7 @@ function prosList2() {
         name: myStr('产品名称'),
         price: myNum2(),
         num: myDay(),
+        sales: myDay(),
     }
 }
 // 店铺信息
@@ -117,15 +118,19 @@ function shopList() {
         isSenior: iBoolean.random(),
         list: [{
             url: '#',
+            name: myStr('产品名称'),
             image: myImg(100)
         }, {
             url: '#',
+            name: myStr('产品名称'),
             image: myImg(100)
         }, {
             url: '#',
+            name: myStr('产品名称'),
             image: myImg(100)
         }, {
             url: '#',
+            name: myStr('产品名称'),
             image: myImg(100)
         }]
     }
@@ -164,8 +169,10 @@ module.exports = function () {
             rows: eachFn(searchShopTitle)
         },
         'productSearch.htm': {
-            EXPLAIN: '关键词搜索结果-商品(默认销售量排序)',
-            ARGUMENT: '关键词（word=关键词）、销售量（sort=0）、新品（sort=1）、价格低到高（sort=2&order=0）、价格高到低（sort=2&order=1）',
+            EXPLAIN: '关键词搜索结果-商品(默认销售量排序) && 品类商品列表页面',
+            ARGUMENT: '分类（id=分类id）、关键词（word=关键词）、销售量（sort=0）、新品（sort=1）、价格低到高（sort=2&order=0）、价格高到低（sort=2&order=1）、品牌（brand=品牌词）、胎面宽度（width=选项内容）、服务内容（server=选项内容）、价格区间小（price1=价格数值）、价格区间大（price2=价格数值）',
+            category_name: myStr('分类名称'),
+            id: myNum2(),
             rows: eachFn(prosList2, 6)
         },
         'storeSearch.htm': {

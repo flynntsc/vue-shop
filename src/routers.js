@@ -30,11 +30,11 @@ export default function (router) {
                 require(['./views/search.vue'], res);
             }
         },
-        // 搜索结果-店铺
-        '/search-shop': {
-            name: 'search-shop',
+        // 品类商品列表
+        '/category': {
+            name: 'category',
             component(res) {
-                require(['./views/search-shop.vue'], res);
+                require(['./views/category.vue'], res);
             }
         },
     })
