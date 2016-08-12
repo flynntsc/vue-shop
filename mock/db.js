@@ -5,12 +5,12 @@ const faker = require('faker/locale/zh_CN')
 const onlyOne = 0
 
 // 生成多个数据
-function eachFn(fn, num) {
+function eachFn(fn, num, ...args) {
     let arr = [],
         obj = {}
     num = onlyOne || num || 10
     for(let i = 0; i < num; i++) {
-        arr.push(fn.call(this));
+        arr.push(fn.apply(this, args));
     }
     return arr;
 }
@@ -68,6 +68,7 @@ const stats = ['待执行', '执行中', '已完成', '已取消'];
 const certType = ['身份证', '护照', '港澳通行证', '台胞证', '其他'];
 const certType2 = ['三证分离（传统）', '三证合一（一码）', '三证分离（多码）']; // 企业证件类型
 const cardType = ['挂失', '申请解挂失', '申请换卡', '申请退卡', '正常', '禁用', '退卡']; // 油卡状态
+const useRange = ['全店通用', '机油专用', '配件专用']
 const signs = ['已签到', '']
 const iBoolean = [true, false]
 const isNeed = ['需要', '不需要']
@@ -135,6 +136,20 @@ function shopList() {
         }]
     }
 }
+// 抵用券
+function coupons(bool = false) {
+    return {
+        id: myDay(),
+        value: myDay(),
+        lower_price: myDay(),
+        store_name: myStr('店铺名称'),
+        use_range: useRange.random(),
+        use_time: '2016.01.01~2016.12.12',
+        isEmpty: iBoolean.random(),
+        isPast: iBoolean.random(),
+        isGet: bool
+    }
+}
 
 
 module.exports = function () {
@@ -180,5 +195,14 @@ module.exports = function () {
             ARGUMENT: '关键词（word=关键词）、销售量（sort=0）、店铺评分（sort=1）',
             rows: eachFn(shopList, 6)
         },
+        'coupons.htm': {
+            EXPLAIN: '抵用券（未领取&&已领取）',
+            ARGUMENT: '关键词（word=关键词）、销售量（sort=0）、店铺评分（sort=1）',
+            rows: eachFn(coupons, 6),
+            rows2: eachFn(coupons, 6, true)
+        },
+        'coupons-update.htm': {
+            EXPLAIN: '抵用券更新数据，POST提交地址',
+        }
     }
 }

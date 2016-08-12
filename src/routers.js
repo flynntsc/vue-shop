@@ -31,10 +31,17 @@ export default function (router) {
             }
         },
         // 品类商品列表
-        '/category': {
-            name: 'category',
+        '/category-products': {
+            name: 'category-products',
             component(res) {
-                require(['./views/category.vue'], res);
+                require(['./views/category-products.vue'], res);
+            }
+        },
+        // 抵用券领取
+        '/coupons': {
+            name: 'coupons',
+            component(res) {
+                require(['./views/coupons.vue'], res);
             }
         },
     })
