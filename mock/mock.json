@@ -1,0 +1,125 @@
+{
+    "index.htm": {
+        "EXPLAIN": "首页热销产品",
+        "res": 200,
+        "rows": [{
+            "url": "/category/product/url",
+            "image": "http://temp.im/100",
+            "name": "阎航产品名称",
+            "price": 5698
+        }]
+    },
+    "new_products.htm": {
+        "EXPLAIN": "首页新品产品",
+        "rows": [{
+            "url": "/category/product/url",
+            "image": "http://temp.im/100",
+            "name": "徐煜城产品名称",
+            "price": 8047
+        }]
+    },
+    "like_products.htm": {
+        "EXPLAIN": "首页猜你喜欢",
+        "rows": [{
+            "url": "/category/product/url",
+            "image": "http://temp.im/100",
+            "name": "于天磊产品名称",
+            "price": 2667
+        }]
+    },
+    "cat1-pros.htm": {
+        "EXPLAIN": "首页机油分类产品",
+        "rows": [{
+            "url": "/category/product/url",
+            "image": "http://temp.im/100",
+            "name": "苏烨伟产品名称",
+            "price": 1789
+        }]
+    },
+    "productKeySearch.htm": {
+        "EXPLAIN": "搜索引申关键字-商品",
+        "ARGUMENT": "输入词（keyWords=输入词）",
+        "rows": [{
+            "title": "程晓啸产品名称"
+        }]
+    },
+    "storeKeySearch.htm": {
+        "EXPLAIN": "搜索引申关键字-店铺",
+        "ARGUMENT": "输入词（keyWords=输入词）",
+        "rows": [{
+            "title": "邱峻熙店铺名称"
+        }]
+    },
+    "productSearch.htm": {
+        "EXPLAIN": "关键词搜索结果-商品(默认销售量排序) && 品类商品列表页面",
+        "ARGUMENT": "分类（id=分类id）、关键词（word=关键词）、销售量（sort=0）、新品（sort=1）、价格低到高（sort=2&order=0）、价格高到低（sort=2&order=1）、品牌（brand=品牌词）、胎面宽度（width=选项内容）、服务内容（server=选项内容）、价格区间小（price1=价格数值）、价格区间大（price2=价格数值）",
+        "category_name": "邓胤祥分类名称",
+        "id": 5913,
+        "rows": [{
+            "url": "/category/product/url",
+            "image": "http://temp.im/100",
+            "name": "萧耀杰产品名称",
+            "price": 6486,
+            "num": 53,
+            "sales": 73
+        }]
+    },
+    "storeSearch.htm": {
+        "EXPLAIN": "关键词搜索结果-店铺(默认销售量排序)",
+        "ARGUMENT": "关键词（word=关键词）、销售量（sort=0）、店铺评分（sort=1）",
+        "rows": [{
+            "url": "#",
+            "logo": "http://temp.im/80",
+            "name": "梁峻熙店铺名称",
+            "sales": 32,
+            "total": 8488,
+            "isSenior": false,
+            "list": [{
+                "url": "#",
+                "name": "董乐驹产品名称",
+                "image": "http://temp.im/100"
+            }, {
+                "url": "#",
+                "name": "于健雄产品名称",
+                "image": "http://temp.im/100"
+            }, {
+                "url": "#",
+                "name": "何文昊产品名称",
+                "image": "http://temp.im/100"
+            }, {
+                "url": "#",
+                "name": "孙峻熙产品名称",
+                "image": "http://temp.im/100"
+            }]
+        }]
+    },
+    "coupons.htm": {
+        "EXPLAIN": "抵用券（未领取&&已领取）",
+        "ARGUMENT": "关键词（word=关键词）、销售量（sort=0）、店铺评分（sort=1）",
+        "rows": [{
+            "id": 12,
+            "value": 47,
+            "lower_price": 8,
+            "store_name": "方哲瀚店铺名称",
+            "use_range": "配件专用",
+            "use_time": "2016.01.01~2016.12.12",
+            "isEmpty": false,
+            "isPast": true,
+            "isGet": false
+        }],
+        "rows2": [{
+            "id": 28,
+            "value": 24,
+            "lower_price": 72,
+            "store_name": "史航店铺名称",
+            "use_range": "全店通用",
+            "use_time": "2016.01.01~2016.12.12",
+            "isEmpty": true,
+            "isPast": true,
+            "isGet": true
+        }]
+    },
+    "coupons-update.htm": {
+        "EXPLAIN": "抵用券更新数据，POST提交地址"
+    }
+}

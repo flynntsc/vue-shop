@@ -1,5 +1,5 @@
 'use strict'
-const faker = require('faker/locale/zh_CN')
+const faker = require('faker/locale/ja')
 
 // 是否只生成1个数值以便生成API
 const onlyOne = 0
@@ -45,7 +45,10 @@ const myAbbr = () => faker.address.stateAbbr();
 const myCompany = () => faker.name.firstName() + faker.name.lastName() + '有限公司';
 const myShop = () => faker.name.firstName() + faker.name.lastName() + '店铺名称';
 const myPro = () => faker.name.firstName() + faker.name.lastName() + '产品名称';
+// 自定义后缀文字
 const myStr = (str = '') => faker.name.firstName() + faker.name.lastName() + str;
+// 自定义数值个数??????????
+// const myNums =
 const myWords = () => faker.random.words();
 const myImg = (num = 100) => 'http://temp.im/' + num;
 const myDate = () => {
@@ -185,7 +188,7 @@ module.exports = function () {
         },
         'productSearch.htm': {
             EXPLAIN: '关键词搜索结果-商品(默认销售量排序) && 品类商品列表页面',
-            ARGUMENT: '分类（id=分类id）、关键词（word=关键词）、销售量（sort=0）、新品（sort=1）、价格低到高（sort=2&order=0）、价格高到低（sort=2&order=1）、品牌（brand=品牌词）、胎面宽度（width=选项内容）、服务内容（server=选项内容）、价格区间小（price1=价格数值）、价格区间大（price2=价格数值）',
+            ARGUMENT: '店铺（shop=店铺id）分类（id=分类id）、关键词（word=关键词）、销售量（sort=0）、新品（sort=1）、价格低到高（sort=2&order=0）、价格高到低（sort=2&order=1）、品牌（brand=品牌词）、胎面宽度（width=选项内容）、服务内容（server=选项内容）、价格区间小（price1=价格数值）、价格区间大（price2=价格数值）',
             category_name: myStr('分类名称'),
             id: myNum2(),
             rows: eachFn(prosList2, 6)
@@ -203,6 +206,6 @@ module.exports = function () {
         },
         'coupons-update.htm': {
             EXPLAIN: '抵用券更新数据，POST提交地址',
-        }
+        },
     }
 }

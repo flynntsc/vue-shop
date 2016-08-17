@@ -1,49 +1,51 @@
 <template>
-    <!-- 头部 -->
-    <div class="v-hd">
-        <div class="v-back" @click="goback"><i class="iconfont">&#xe602;</i></div>
-        <div class="v-search">
-            <search-cat @result-click="resultClick" @on-change="getResult" @del-history="delHistory" :results="results" :value.sync="searchVal" :cats="catsArr" :cats-val.sync="catsVal" :placeholder="searchPhr"></search-cat>
+    <div>
+        <!-- 头部 -->
+        <div class="v-hd">
+            <div class="v-back" @click="goback"><i class="iconfont">&#xe602;</i></div>
+            <div class="v-search">
+                <search-cat @result-click="resultClick" @on-change="getResult" @del-history="delHistory" :results="results" :value.sync="searchVal" :cats="catsArr" :cats-val.sync="catsVal" :placeholder="searchPhr"></search-cat>
+            </div>
         </div>
-    </div>
 
-    <!-- 商品 -->
-    <div class="v-prolist" v-show="catsVal === '商品'">
-        <tab>
-            <tab-item :selected="this.tabProsNum === 0" @click="tabProsFn(0)">销售量</tab-item>
-            <tab-item :selected="this.tabProsNum === 1" @click="tabProsFn(1)">新品</tab-item>
-            <tab-item :selected="this.tabProsNum === 2" @click="tabProsFn(2)">价格</tab-item>
-        </tab>
-        <div class="v-pbd">
-            <products-list :proslist="prosList"></products-list>
+        <!-- 商品 -->
+        <div class="v-prolist" v-show="catsVal === '商品'">
+            <tab>
+                <tab-item :selected="this.tabProsNum === 0" @click="tabProsFn(0)">销售量</tab-item>
+                <tab-item :selected="this.tabProsNum === 1" @click="tabProsFn(1)">新品</tab-item>
+                <tab-item :selected="this.tabProsNum === 2" @click="tabProsFn(2)">价格</tab-item>
+            </tab>
+            <div class="v-pbd">
+                <products-list :proslist="prosList"></products-list>
+            </div>
         </div>
-    </div>
 
-    <!-- 店铺 -->
-    <div class="v-shoplist" v-show="catsVal === '店铺'">
-        <tab>
-            <tab-item :selected="this.tabShopNum === 0" @click="tabShopFn(0)">销售量</tab-item>
-            <tab-item :selected="this.tabShopNum === 1" @click="tabShopFn(1)">店铺评分</tab-item>
-        </tab>
-        <div class="v-sbd">
-            <div class="v-shop" v-for="items of shopList">
-                <div class="v-shophd" v-link="{path:items.url}">
-                    <div class="info">
-                        <img :src="items.logo" :alt="items.name" class="img">
-                        <div class="detail">
-                            <div class="name">{{items.name}}</div>
-                            <div class="num">
-                                <span class="sales">销量{{items.sales}}</span>
-                                <span class="total">共{{items.total}}件商品</span>
+        <!-- 店铺 -->
+        <div class="v-shoplist" v-show="catsVal === '店铺'">
+            <tab>
+                <tab-item :selected="this.tabShopNum === 0" @click="tabShopFn(0)">销售量</tab-item>
+                <tab-item :selected="this.tabShopNum === 1" @click="tabShopFn(1)">店铺评分</tab-item>
+            </tab>
+            <div class="v-sbd">
+                <div class="v-shop" v-for="items of shopList">
+                    <div class="v-shophd" v-link="{path:items.url}">
+                        <div class="info">
+                            <img :src="items.logo" :alt="items.name" class="img">
+                            <div class="detail">
+                                <div class="name">{{items.name}}</div>
+                                <div class="num">
+                                    <span class="sales">销量{{items.sales}}</span>
+                                    <span class="total">共{{items.total}}件商品</span>
+                                </div>
                             </div>
                         </div>
+                        <div class="entry">
+                            <button class="weui_btn weui_btn_mini weui_btn_default weui_btn_plain_default btn" v-link="{path:items.url}">进入店铺</button>
+                        </div>
                     </div>
-                    <div class="entry">
-                        <button class="weui_btn weui_btn_mini weui_btn_default weui_btn_plain_default btn" v-link="{path:items.url}">进入店铺</button>
+                    <div class="v-shopbd">
+                        <div class="pro" v-for="item of items.list"><img :src="item.image" alt="" class="img"></div>
                     </div>
-                </div>
-                <div class="v-shopbd">
-                    <div class="pro" v-for="item of items.list"><img :src="item.image" alt="" class="img"></div>
                 </div>
             </div>
         </div>
