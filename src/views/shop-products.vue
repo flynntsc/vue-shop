@@ -4,7 +4,7 @@
         <div class="v-hd">
             <div class="v-back" @click="goback"><i class="iconfont">&#xe602;</i></div>
             <div class="v-search">
-                <search-cat @result-click="resultClick" @on-change="getResult" @del-history="delHistory" :results="results" :value.sync="searchVal" :cats="catsArr" :placeholder="searchPhr"></search-cat>
+                <search-cat v-ref:search @result-click="resultClick" @on-change="getResult" @del-history="delHistory" :results="results" :value.sync="searchVal" :cats="catsArr" :placeholder="searchPhr"></search-cat>
             </div>
         </div>
 
@@ -27,7 +27,7 @@ import {
     Search,
     Tab,
     TabItem,
-} from 'vux/src/components';
+} from 'vux/src/components'
 import SearchCat from '../components/search-cat/index.vue'
 import ProductsList from '../components/products-list/index.vue'
 
@@ -40,6 +40,7 @@ export default {
     },
     data() {
         return {
+            shop: '',
             // 搜索
             searchPhr: '店内搜索商品',
             searchVal: '',
@@ -55,8 +56,9 @@ export default {
     ready() {
         // 根据url参数请求相应数据
         let getRes = (url, sort, type = 0) => {
-            this.$http.get(`/app/shopping/${url}?word=${this.searchVal}&sort=${sort}`).then(res => {
+            this.$http.get(`/app/shopping/${url}?shop=${this.shop}&word=${this.searchVal}&sort=${this.sort}`).then(res => {
                 if (res.ok) {
+                    console.log(res)
                     let rows = JSON.parse(res.data).rows;
                     !type ? this.prosList = rows : this.shopList = rows
                 }
@@ -65,9 +67,14 @@ export default {
 
         // 初始化数据结果
         let sort = this.$route.query.sort || 0
-        this.shop
-        this.searchPhr = this.searchVal = this.$route.query.word || ''
+        this.shop = this.$route.query.shop || 0
+        this.searchPhr = this.searchVal = this.$route.query.word || this.searchPhr
         getRes('productSearch.htm', sort)
+
+        // 页面打开直接获取焦点
+        if (this.$route.query.focus) {
+            this.$refs.search.touch()
+        }
     },
     methods: {
         // 返回
@@ -161,12 +168,29 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../assets/styles/iconfont.scss';
+// 修改组件样式
+.v-search {
+    .weui_search_bar {
+        padding: 0;
+    }
+    .vux-search-fixed {
+        .weui_search_bar {
+            padding: 8px 10px;
+        }
+    }
+    .weui_search_text {
+        // text-align: left;
+    }
+}
+</style>
+<style lang="scss" scoped>
 // 自定义头部
 .v-hd {
     position: relative;
     display: flex;
+    align-items: center;
     // padding: 0 10px;
     background-color: #c50a1d;
 }
@@ -181,21 +205,8 @@ export default {
     line-height: 44px;
     text-align: center;
     color: #fff;
-}
-</style>
-<style lang="scss">
-// 修改组件样式
-.v-search {
-    .weui_search_bar {
-        padding: 0;
-    }
-    .vux-search-fixed {
-        .weui_search_bar {
-            padding: 8px 10px;
-        }
-    }
-    .weui_search_text {
-        // text-align: left;
+    i {
+        font-size: 22px;
     }
 }
 </style>

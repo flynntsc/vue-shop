@@ -1,5 +1,5 @@
 'use strict'
-const faker = require('faker/locale/ja')
+const faker = require('faker/locale/zh_CN')
 
 // 是否只生成1个数值以便生成API
 const onlyOne = 0
@@ -114,7 +114,7 @@ function prosList2() {
 // 店铺信息
 function shopList() {
     return {
-        url: '#',
+        shop: myDay(),
         logo: myImg(80),
         name: myStr('店铺名称'),
         sales: myDay(),
@@ -151,6 +151,33 @@ function coupons(bool = false) {
         isEmpty: iBoolean.random(),
         isPast: iBoolean.random(),
         isGet: bool
+    }
+}
+// 店铺首页
+function shopIndex() {
+    return {
+        shop: myDay(),
+        backgroundImage: myImg('320x110'),
+        logo: myImg(80),
+        name: myStr('店铺名称'),
+        sales: myDay(),
+        total: myNum2(),
+        isSenior: iBoolean.random(),
+        swiperList: [{
+            url: 'javascript:',
+            img: myImg('320x180'),
+            title: '说明文字可有可无'
+        }, {
+            url: 'javascript:',
+            img: myImg('320x180'),
+            title: '说明文字可有可无'
+        }, {
+            url: 'javascript',
+            img: myImg('320x180'),
+            title: '说明文字可有可无'
+        }],
+        hotList: eachFn(prosList2, 6),
+        newList: eachFn(prosList2, 6),
     }
 }
 
@@ -206,6 +233,10 @@ module.exports = function () {
         },
         'coupons-update.htm': {
             EXPLAIN: '抵用券更新数据，POST提交地址',
+        },
+        'shop-index.htm': {
+            EXPLAIN: '店铺首页',
+            rows: shopIndex(),
         },
     }
 }

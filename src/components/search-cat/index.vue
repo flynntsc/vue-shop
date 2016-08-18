@@ -1,5 +1,4 @@
 <template>
-    <!-- 深度定制？？？ -->
     <div class="vux-search-box">
         <div class="weui_search_bar" id="search_bar" :class="{weui_search_focusing: !isCancel}">
             <div class="v-search-box" v-if="cats.length">
