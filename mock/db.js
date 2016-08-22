@@ -180,6 +180,19 @@ function shopIndex() {
         newList: eachFn(prosList2, 6),
     }
 }
+// 店铺分类页
+function shopCats(argument) {
+    return {
+        id: myDay(),
+        name: myStr('一级分类名称'),
+        rows: eachFn(function (argument) {
+            return {
+                id: myDay(),
+                name: myStr('二级分类名称'),
+            }
+        }, 5)
+    }
+}
 
 
 module.exports = function () {
@@ -238,5 +251,15 @@ module.exports = function () {
             EXPLAIN: '店铺首页',
             rows: shopIndex(),
         },
+        'shop-categorys.htm': {
+            EXPLAIN: '店铺分类页',
+            ARGUMENT: '店铺id（shop=id）',
+            rows: eachFn(shopCats, 3),
+        },
+        'product-detail.htm': {
+            EXPLAIN: '产品详情页面',
+            ARGUMENT: '店铺id(shop=*)、产品id（id=*）',
+            rows: eachFn(shopCats, 3),
+        }
     }
 }

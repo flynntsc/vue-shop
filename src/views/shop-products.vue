@@ -15,9 +15,7 @@
                 <tab-item :selected="this.tabProsNum === 1" @click="tabProsFn(1)">新品</tab-item>
                 <tab-item :selected="this.tabProsNum === 2" @click="tabProsFn(2)">价格</tab-item>
             </tab>
-            <div class="v-pbd">
-                <products-list :proslist="prosList"></products-list>
-            </div>
+            <products-list :proslist="prosList"></products-list>
         </div>
     </div>
 </template>
