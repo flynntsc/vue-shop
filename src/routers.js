@@ -24,13 +24,15 @@ export default function (router) {
             }
         },
         // 搜索结果
+        // 商品?type=*&word=*sort=*order=*
+        // 店铺?word=*&sort=*
         '/search': {
             name: 'search-pros',
             component(res) {
                 require(['./views/search.vue'], res);
             }
         },
-        // 所有品类商品列表
+        // 所有品类商品列表?cat=id
         // 店铺品类商品列表?shop=id&cat=id
         '/category-products': {
             name: 'category-products',
@@ -74,6 +76,12 @@ export default function (router) {
                 require(['./views/product-detail.vue'], res);
             }
         },
-
+        // 购物车
+        '/shopping-cart': {
+            name: 'shopping-cart',
+            component(res) {
+                require(['./views/shopping-cart.vue'], res);
+            }
+        },
     })
 }

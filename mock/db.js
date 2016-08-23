@@ -95,6 +95,8 @@ function searchShopTitle() {
 function prosList1() {
     return {
         url: '/category/product/url',
+        shop: myDay(),
+        id: myDay(),
         image: myImg(),
         name: myPro(),
         price: myNum2(),
@@ -104,6 +106,8 @@ function prosList1() {
 function prosList2() {
     return {
         url: '/category/product/url',
+        shop: myDay(),
+        id: myDay(),
         image: myImg(),
         name: myStr('产品名称'),
         price: myNum2(),
@@ -122,18 +126,26 @@ function shopList() {
         isSenior: iBoolean.random(),
         list: [{
             url: '#',
+            id: myDay(),
+            shop: myDay(),
             name: myStr('产品名称'),
             image: myImg(100)
         }, {
             url: '#',
+            id: myDay(),
+            shop: myDay(),
             name: myStr('产品名称'),
             image: myImg(100)
         }, {
             url: '#',
+            id: myDay(),
+            shop: myDay(),
             name: myStr('产品名称'),
             image: myImg(100)
         }, {
             url: '#',
+            id: myDay(),
+            shop: myDay(),
             name: myStr('产品名称'),
             image: myImg(100)
         }]
@@ -150,7 +162,7 @@ function coupons(bool = false) {
         use_time: '2016.01.01~2016.12.12',
         isEmpty: iBoolean.random(),
         isPast: iBoolean.random(),
-        isGet: bool
+        isGet: bool,
     }
 }
 // 店铺首页
@@ -191,6 +203,33 @@ function shopCats(argument) {
                 name: myStr('二级分类名称'),
             }
         }, 5)
+    }
+}
+// 产品详情
+function productData(argument) {
+    return {
+        shop: myDay(),
+        id: myDay(),
+        name: myStr('产品名称'),
+        img_list: [{
+            url: 'javascript:',
+            img: myImg('320x180'),
+            title: '说明文字可有可无'
+        }, {
+            url: 'javascript:',
+            img: myImg('320x180'),
+            title: '说明文字可有可无'
+        }, {
+            url: 'javascript',
+            img: myImg('320x180'),
+            title: '说明文字可有可无'
+        }],
+        price: myNum2(),
+        price_origin: myNum(),
+        freightage: myDay(),
+        sales: myDay(),
+        address: myArea2(),
+        detail: '<h1>Hello Detail!!!</><img src="http://temp.im/320x100">',
     }
 }
 
@@ -258,8 +297,8 @@ module.exports = function () {
         },
         'product-detail.htm': {
             EXPLAIN: '产品详情页面',
-            ARGUMENT: '店铺id(shop=*)、产品id（id=*）',
-            rows: eachFn(shopCats, 3),
+            ARGUMENT: '店铺id(shop=*)、产品pro（pro=*）',
+            rows: productData(),
         }
     }
 }

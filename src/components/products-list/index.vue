@@ -43,9 +43,13 @@ export default {
         height: 100px;
         margin-left: 110px;
         .name {
+            display: -webkit-box;
             height: 48px;
             line-height: 24px;
             overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
         }
         .price {
             line-height: 32px;

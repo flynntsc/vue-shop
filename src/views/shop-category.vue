@@ -7,13 +7,14 @@
             <div class="weui_cells vux-no-group-title">
                 <div class="weui_cell">
                     <div class="weui_cell_hd"> </div>
-                    <div class="weui_cell_bd weui_cell_primary" v-link="{path:'category-products',query:{shop:this.shop}}">
+                    <div class="weui_cell_bd weui_cell_primary" v-link="{path:'shop-products',query:{shop:this.shop}}">
                         <p>全部商品</p>
                     </div>
                     <div class="weui_cell_ft with_arrow"></div>
                 </div>
             </div>
         </div>
+        <!-- 分类列表 -->
         <div class="v-cat" v-for="items of categoryList">
             <div class="weui_cells vux-no-group-title">
                 <div class="weui_cell">
@@ -24,7 +25,7 @@
                     <div class="weui_cell_ft with_arrow"></div>
                 </div>
                 <div class="v-catbd">
-                    <div class="li" v-for="items of items.rows" v-link="{path:'product-detail',query:{shop:this.shop,pro:items.id}}">{{items.name}}</div>
+                    <div class="li" v-for="items of items.rows" v-link="{path:'category-products',query:{shop:this.shop,cat:items.id}}">{{items.name}}</div>
                 </div>
             </div>
         </div>
@@ -67,7 +68,6 @@ export default {
     background-color: #c50a1d;
 }
 
-// 一级
 .v-catbd {
     position: relative;
     overflow: hidden;

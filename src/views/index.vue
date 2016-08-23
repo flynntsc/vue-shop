@@ -92,7 +92,7 @@
         <!-- tab热销产品 -->
         <div class="v-list" v-show="tabSel === 0">
             <div class="v-prolist">
-                <div class="v-pro" v-for="items of hotPros">
+                <div class="v-pro" v-for="items of hotPros" v-link="{path:'product-detail',query:{shop:items.shop,pro:items.id}}">
                     <div class="hd">
                         <img :src="items.image" :alt="items.name" class="img">
                     </div>
@@ -109,7 +109,7 @@
         <!-- tab新品产品 -->
         <div class="v-list" v-show="tabSel === 1">
             <div class="v-prolist">
-                <div class="v-pro" v-for="items of newPros">
+                <div class="v-pro" v-for="items of newPros" v-link="{path:'product-detail',query:{shop:items.shop,pro:items.id}}">
                     <div class="hd">
                         <img :src="items.image" :alt="items.name" class="img">
                     </div>
@@ -126,7 +126,7 @@
         <!-- tab猜你喜欢 -->
         <div class="v-list" v-show="tabSel === 2">
             <div class="v-prolist">
-                <div class="v-pro" v-for="items of lovPros">
+                <div class="v-pro" v-for="items of lovPros" v-link="{path:'product-detail',query:{shop:items.shop,pro:items.id}}">
                     <div class="hd">
                         <img :src="items.image" :alt="items.name" class="img">
                     </div>
@@ -152,7 +152,7 @@
         <!-- 机油产品 -->
         <div class="v-list">
             <div class="v-prolist">
-                <div class="v-pro" v-for="items of cat1Pros">
+                <div class="v-pro" v-for="items of cat1Pros" v-link="{path:'product-detail',query:{shop:items.shop,pro:items.id}}">
                     <div class="hd">
                         <img :src="items.image" :alt="items.name" class="img">
                     </div>
@@ -376,23 +376,6 @@ export default {
     }
 }
 
-// .v-banner {
-//     display: flex;
-//     .lban {
-//         flex: 1;
-//         height: 320px;
-//     }
-//     img {
-//         width: 100%;
-//         height: 100%;
-//     }
-//     .rhd {
-//         height: 160px;
-//     }
-//     .rbd {
-//         display: flex;
-//     }
-// }
 // 菜单
 .v-nav {
     .item {
@@ -443,9 +426,13 @@ export default {
         }
         .bd {
             .name {
+                display: -webkit-box;
                 height: 32px;
                 line-height: 16px;
                 overflow: hidden;
+                text-overflow: ellipsis;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
                 font-size: 12px;
             }
             .pri {
