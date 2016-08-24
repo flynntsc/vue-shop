@@ -229,6 +229,8 @@ function productData(argument) {
         freightage: myDay(),
         sales: myDay(),
         address: myArea2(),
+        shop_collect: iBoolean.random(),
+        pros_collect: iBoolean.random(),
         detail: '<h1>Hello Detail!!!</><img src="http://temp.im/320x100">',
     }
 }

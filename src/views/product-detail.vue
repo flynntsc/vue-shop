@@ -1,7 +1,7 @@
 <template>
     <div class="v-product">
         <!-- 头部 -->
-        <x-header :left-options="{showBack: false}" class="v-catHd">
+        <x-header :left-options="{showBack: false}" class="v-hd">
             卡车商城
             <i class="iconfont v-back" slot="left">&#xe602;</i>
             <i class="iconfont v-cart" slot="right">&#xe601;</i>
@@ -32,10 +32,58 @@
             </div>
 
             <div class="v-detailbd">
-                <cell link="javascript;">
-                    <span slot="after-title">领取优惠券</span>
-                </cell>
+                <div class="v-favorable">
+                    <cell link="javascript;">
+                        <span slot="after-title">领取优惠券</span>
+                    </cell>
+                    <cell link="javascript;">
+                        <span slot="after-title">领取积分</span>
+                    </cell>
+                </div>
+                <div class="v-myshop">
+                    <div class="hd">顾客旗舰店</div>
+                    <div class="bd">
+                        <div class="mark" v-show="productData.shop_collect" @click="markShop(0)"><i class="iconfont">&#xe608;</i> 收藏店铺</div>
+                        <div class="mark z-act" @click="markShop(1)" v-else><i class="iconfont">&#xe607;</i> 收藏店铺</div>
+                        <div class="link">进入店铺</div>
+                    </div>
+                </div>
             </div>
+
+            <!-- tab -->
+            <div class="v-tabs">
+                <tab>
+                    <tab-item :selected="tabSel === 0" @click="tabSel = 0">商品详情</tab-item>
+                    <tab-item :selected="tabSel === 1" @click="tabArgs">产品参数</tab-item>
+                    <tab-item :selected="tabSel === 2" @click="tabAssess">评价</tab-item>
+                </tab>
+                <div class="v-tabcon">
+                    <div class="v-content" v-show="tabSel === 0">1</div>
+                    <div class="v-content" v-show="tabSel === 1">{{tabArgsCon}}
+                        <div class="f-tac">
+                            <spinner :type="ios" slot="value" v-show="disTab1"></spinner>
+                        </div>
+                    </div>
+                    <div class="v-content" v-show="tabSel === 2">{{tabAssessCon}}
+                        <div class="f-tac">
+                            <spinner :type="ios" slot="value" v-show="disTab2"></spinner>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部 -->
+        <div class="v-ft">
+            <div class="contact">
+                <i class="iconfont">&#xe605;</i>
+            </div>
+            <div class="markpro">
+                <i class="iconfont" v-show="productData.pros_collect" @click="markpro(0)">&#xe606;</i>
+                <i class="iconfont z-act" @click="markpro(1)" v-else>&#xe609;</i>
+            </div>
+            <div class="cart">加入购物车</div>
+            <div class="buy">立即购买</div>
         </div>
     </div>
 </template>
@@ -45,6 +93,9 @@ import {
     XHeader,
     Swiper,
     Cell,
+    Tab,
+    TabItem,
+    Spinner,
 } from 'vux/src/components';
 
 
@@ -53,6 +104,9 @@ export default {
         XHeader,
         Swiper,
         Cell,
+        Tab,
+        TabItem,
+        Spinner,
     },
     data() {
         return {
@@ -69,7 +123,14 @@ export default {
                 sales: '',
                 freightage: '',
                 detail: '',
-            }
+                shop_collect: false,
+                pros_collect: false,
+            },
+            tabSel: 0,
+            tabArgsCon: '',
+            tabAssessCon: '',
+            disTab1: true,
+            disTab2: true,
         }
     },
     ready() {
@@ -83,7 +144,32 @@ export default {
         })
     },
     methods: {
+        markShop(bool) {
+            this.productData.shop_collect = !!bool
+                // ajax传送给服务器
+        },
+        markpro(bool) {
+            this.productData.pros_collect = !!bool
+        },
+        tabArgs() {
+            this.tabSel = 1
+            if (!this.tabArgsCon.length) {
 
+                // ajax获取
+                this.tabArgsCon = '参数'
+                this.disTab1 = 0
+            }
+
+        },
+        tabAssess() {
+            this.tabSel = 2
+            if (!this.tabAssessCon.length) {
+
+                // ajax获取
+                this.tabAssessCon = '评价'
+                this.disTab2 = 0
+            }
+        },
     }
 }
 </script>
@@ -94,7 +180,13 @@ export default {
     padding: 44px 0;
 }
 
-.v-catHd {
+.v-hd {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 100%;
+    height: 44px;
     background: #c50a1d;
 }
 
@@ -183,7 +275,137 @@ export default {
 
 .v-imgbd {}
 
-.v-detailbd {
+.v-detailbd {}
+
+// 优惠相关
+.v-favorable {
+    margin-bottom: 10px;
     background: #fff;
+}
+
+// 店铺
+.v-myshop {
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    background: #fff;
+    .hd {
+        margin-bottom: 10px;
+        color: #2e77e3;
+    }
+    .bd {
+        position: relative;
+        text-align: center;
+        &:after {
+            content: " ";
+            display: inline-block;
+            transform: rotate(45deg);
+            height: 6px;
+            width: 6px;
+            border-width: 2px 2px 0 0;
+            border-color: #c8c8cd;
+            border-style: solid;
+            position: absolute;
+            top: -1px;
+            right: 0;
+            margin-left: .3em;
+        }
+        .mark {
+            display: inline-block;
+            margin-right: 20px;
+            line-height: 24px;
+            padding: 0 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+            background: #f1f1f1;
+            &.z-act {
+                i {
+                    color: #f00;
+                }
+            }
+        }
+        .link {
+            display: inline-block;
+            line-height: 24px;
+            padding: 0 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #fff;
+            background: #fe4b47;
+        }
+    }
+}
+
+// tab
+.v-tabcon {
+    background: #fff;
+    margin-bottom: 10px;
+}
+
+.f-tac {
+    text-align: center;
+}
+
+// 底部菜单
+.v-ft {
+    position: fixed;
+    display: flex;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    font-size: 16px;
+    text-align: center;
+    color: #fff;
+    background: rgba(255, 255, 255, .9);
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        border-top: 1px solid #ececec;
+        transform: scaleY(.5);
+    }
+    .contact {
+        position: relative;
+        width: 64px;
+        height: 44px;
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            border-right: 1px solid #ececec;
+            transform: scaleX(.5);
+        }
+        i {
+            line-height: 44px;
+            font-size: 26px;
+            color: #2e77e3;
+        }
+    }
+    .markpro {
+        width: 64px;
+        height: 44px;
+        color: #666;
+        i {
+            line-height: 44px;
+            font-size: 22px;
+            &.z-act {
+                color: #f00;
+            }
+        }
+    }
+    .cart {
+        flex: 1;
+        background: #ff9703;
+    }
+    .buy {
+        flex: 1;
+        background: #c50a1d;
+    }
 }
 </style>
