@@ -92,7 +92,7 @@
         </div>
 
         <!-- 底部菜单 -->
-        <div class="v-fd">
+        <div class="v-ft">
             <div class="sel">
                 <label>
                     <input type="checkbox" name="" id=""> 全选
@@ -182,7 +182,7 @@ export default {
 }
 
 // 底部菜单
-.v-fd {
+.v-ft {
     position: fixed;
     bottom: 0;
     left: 0;

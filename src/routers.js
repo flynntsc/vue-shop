@@ -77,10 +77,17 @@ export default function (router) {
             }
         },
         // 购物车
-        '/shopping-cart': {
-            name: 'shopping-cart',
+        '/cart': {
+            name: 'cart',
             component(res) {
-                require(['./views/shopping-cart.vue'], res);
+                require(['./views/cart.vue'], res);
+            }
+        },
+        // 订单
+        '/order': {
+            name: 'order',
+            component(res) {
+                require(['./views/order.vue'], res);
             }
         },
     })
