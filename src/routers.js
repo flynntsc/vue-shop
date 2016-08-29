@@ -90,5 +90,12 @@ export default function (router) {
                 require(['./views/order.vue'], res);
             }
         },
+        // 支付
+        '/payment': {
+            name: 'payment',
+            component(res) {
+                require(['./views/payment.vue'], res);
+            }
+        },
     })
 }
