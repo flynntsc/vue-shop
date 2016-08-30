@@ -1,104 +1,182 @@
 <template>
-    <div class="v-order">
-        <!-- 头部 -->
-        <x-header :left-options="{showBack: false}" class="v-hd">
-            确认订单
-            <i class="iconfont v-back" slot="left">&#xe602;</i>
-        </x-header>
+    <div class="v-orders">
+        <!-- 订单页面 -->
+        <div class="v-order" v-show="status === '0'">
+            <!-- 头部 -->
+            <x-header :left-options="{showBack: false}" class="v-hd">
+                确认订单
+                <i class="iconfont v-back" slot="left">&#xe602;</i>
+            </x-header>
 
-        <div class="v-bd">
-            <!-- 配送 -->
-            <div class="v-send">
-                <!-- select vux -->
-                <div class="v-way">
-                    <selector :value.sync="sendVal" title="配送方式" :options="sendOptions"></selector>
-                </div>
-                <!-- 送货上门 || 上门安装 -->
-                <div class="v-way" v-show="sendVal === '送货上门' || sendVal === '上门安装'">
-                    <cell title="送货形式：">快递</cell>
 
-                    <!-- 地址 -->
-                    <div class="v-address">
-                        <div class="hd">
-                            <div class="name">收货人：张三</div>
-                            <div class="tel">13455432234</div>
-                            <div class="arrow"></div>
-                        </div>
-                        <div class="bd">
-                            收货地址：福建省厦门市思明区莲前毅力的的搜房就搜到分奇偶时间覅欧舒丹
-                        </div>
+            <div class="v-bd-0">
+                <!-- 配送 -->
+                <div class="v-send">
+                    <!-- select vux -->
+                    <div class="v-way">
+                        <selector :value.sync="sendVal" title="配送方式" :options="sendOptions"></selector>
                     </div>
-                </div>
-
-                <!-- 到店自提 -->
-                <div class="v-way" v-show="sendVal === '到店自提'">
-                    <cell title="自提门店：">汇管车湖滨门店</cell>
-                    <cell title="预计自提日期" link="javascript;" @click="calendarShow = !calendarShow">{{calendarVal}}</cell>
-                    <cell title="">使用期限：购买成功后100天内有效</cell>
-                </div>
-
-                <!-- 到店安装 -->
-                <div class="v-way" v-show="sendVal === '到店安装'">
-                    <cell title="安装门店：">米其林授权服务店湖滨店</cell>
-                    <cell title="预计到店日期" @click="calendarShow = !calendarShow">{{calendarVal}}</cell>
-                    <cell title="">使用期限：购买成功后100天内有效</cell>
-                </div>
-            </div>
-
-            <!-- 产品信息 -->
-            <div class="v-pros">
-                <div class="v-pro">
-                    <div class="v-cellhd">
-                        <div class="hd">汇管车平台自营店</div>
-                    </div>
-                    <div class="v-cellbd">
-                        <div class="hd">
-                            <img src="http://temp.im/80x80" alt="" class="img">
-                        </div>
-                        <div class="bd">
-                            <div class="v-txt">
-                                <div class="name">米其林圣诞节佛寺的金佛 米其林圣诞节佛寺的金佛寺的见风使舵都是是的寺的见风使舵都是是的</div>
-                                <div class="sku">规格</div>
-                                <div class="nums">
-                                    <div class="pri f-red">￥23.30</div>
-                                    <div class="num">x2</div>
-                                </div>
+                    <!-- 1送货上门 -->
+                    <div class="v-way" v-show="sendVal === '送货上门'">
+                        <cell title="送货形式：">快递</cell>
+                        <div class="v-address">
+                            <div class="hd">
+                                <div class="name">收货人：{{linkName}}</div>
+                                <div class="tel">{{linkTel}}</div>
+                                <div class="arrow"></div>
+                            </div>
+                            <div class="bd">
+                                收货地址：{{linkAddress}}
                             </div>
                         </div>
                     </div>
-                    <div class="v-cellbd">
-                        <div class="bd">运费</div>
-                        <div class="ft f-red">+ 0.00</div>
+
+                    <!-- 4上门安装 -->
+                    <div class="v-way" v-show="sendVal === '上门安装'">
+                        <div class="v-address">
+                            <div class="hd">
+                                <div class="name">联系人：{{linkName}}</div>
+                                <div class="tel">{{linkTel}}</div>
+                                <div class="arrow"></div>
+                            </div>
+                            <div class="bd">
+                                预约上门地址：{{linkAddress}}
+                            </div>
+                        </div>
+                        <cell title="预约上门时间" @click="calendarShow = !calendarShow">{{linkDate}}</cell>
+                        <cell title="">使用期限：购买成功后100天内有效</cell>
                     </div>
-                    <div class="v-cellbd">
-                        <div class="bd">店铺活动：满2件减50</div>
-                        <div class="ft f-red">- 50.00</div>
+
+                    <!-- 2到店自提 -->
+                    <div class="v-way" v-show="sendVal === '到店自提'">
+                        <cell title="自提门店：">汇管车湖滨门店</cell>
+                        <cell title="预计自提日期" link="javascript;" @click="calendarShow = !calendarShow">{{linkDate}}</cell>
+                        <cell title="">使用期限：购买成功后100天内有效</cell>
                     </div>
-                    <div class="v-cellbd">
-                        <div class="hd">卖家留言：</div>
-                        <div class="bd">
-                            <input type="text" class="ipt" placeholder="选填">
+
+                    <!-- 3到店安装 -->
+                    <div class="v-way" v-show="sendVal === '到店安装'">
+                        <cell title="安装门店：">米其林授权服务店湖滨店</cell>
+                        <cell title="预计到店日期" link="javascript;" @click="calendarShow = !calendarShow">{{linkDate}}</cell>
+                        <cell title="">使用期限：购买成功后100天内有效</cell>
+                    </div>
+                </div>
+
+                <!-- 产品信息 -->
+                <div class="v-pros">
+                    <div class="v-pro">
+                        <div class="v-cellhd">
+                            <div class="hd">汇管车平台自营店</div>
+                        </div>
+                        <div class="v-cellbd">
+                            <div class="hd">
+                                <img src="http://temp.im/80x80" alt="" class="img">
+                            </div>
+                            <div class="bd">
+                                <div class="v-txt">
+                                    <div class="name">米其林圣诞节佛寺的金佛 米其林圣诞节佛寺的金佛寺的见风使舵都是是的寺的见风使舵都是是的</div>
+                                    <div class="sku">规格</div>
+                                    <div class="nums">
+                                        <div class="pri f-c2">￥23.30</div>
+                                        <div class="num">x2</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="v-cellbd">
+                            <div class="bd">运费</div>
+                            <div class="ft f-c2">+ 0.00</div>
+                        </div>
+                        <div class="v-cellbd">
+                            <div class="bd">店铺活动：满2件减50</div>
+                            <div class="ft f-c2">- 50.00</div>
+                        </div>
+                        <div class="v-cellbd">
+                            <div class="hd">卖家留言：</div>
+                            <div class="bd">
+                                <input type="text" class="ipt" placeholder="选填">
+                            </div>
+                        </div>
+                        <div class="v-cellbd">
+                            <div class="bd"></div>
+                            <div class="ft">
+                                共2件商品 合计：<span class="f-c2">￥4939.00</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="v-cellbd">
-                        <div class="bd"></div>
-                        <div class="ft">
-                            共2件商品 合计：<span class="f-red">￥4939.00</span>
+                </div>
+            </div>
+
+            <!-- 底部菜单 -->
+            <div class="v-ft">
+                <div class="total">合计：￥<span class="pri">0.00</span></div>
+                <div class="buy">立即购买</div>
+            </div>
+
+            <!-- 日期选择 -->
+            <inline-calendar class="v-calendar" :class="calendarShow ? 'z-crt' : ''" :value.sync="linkDate" :start-date="startDate" :end-date="endDate" :highlight-weekend="highlightWeekend" :weeks-list="weeksList">
+            </inline-calendar>
+        </div>
+
+        <!-- 收货地址页面 -->
+        <div class="v-alist" v-show="status === '1'">
+            <!-- 头部 -->
+            <x-header :left-options="{showBack: false}" class="v-hd">
+                收货地址
+                <i class="iconfont v-back" slot="left">&#xe602;</i>
+                <span class="f-c1" slot="right">新建</span>
+            </x-header>
+
+            <div class="v-bd-1">
+                <div class="v-addrList">
+                    <div class="v-addrbd">
+                        <div class="stat"><i class="iconfont">&#xe60b;</i></div>
+                        <div class="cont">
+                            <div class="hd">
+                                <div class="name">张三</div>
+                                <div class="tel">12312312313</div>
+                            </div>
+                            <div class="bd"><span class="defa">默认</span>厦门市湖里区的开发大道的肯定健身房34号楼493</div>
+                        </div>
+                        <div class="edit">
+                            <i class="iconfont">&#xe60a;</i>
+                        </div>
+                    </div>
+
+
+                    <div class="v-addrbd">
+                        <!-- <div class="stat"><i class="iconfont">&#xe60b;</i></div> -->
+                        <div class="cont">
+                            <div class="hd">
+                                <div class="name">张三</div>
+                                <div class="tel">12312312313</div>
+                            </div>
+                            <div class="bd">厦门市湖里区的开发大道的肯定健身房34号楼493</div>
+                        </div>
+                        <div class="edit">
+                            <i class="iconfont">&#xe60a;</i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- 编辑收货地址页面 -->
+        <div class="v-aedit" v-show="status === '2'">
+            <!-- 头部 -->
+            <x-header :left-options="{showBack: false}" class="v-hd">
+                收货地址
+                <i class="iconfont v-back" slot="left">&#xe602;</i>
+                <span class="f-c1" slot="right">保存</span>
+            </x-header>
 
-        <!-- 底部菜单 -->
-        <div class="v-ft">
-            <div class="total">合计：￥<span class="pri">0.00</span></div>
-            <div class="buy">立即购买</div>
+            <div class="v-bd weui_cells">
+                <x-input title="姓名" :value.sync="aeditName" name="username" placeholder="请输入姓名" is-type="china-name" :show-clear="false"></x-input>
+                <x-input title="手机号码" :value.sync="aeditTel" name="mobile" placeholder="请输入手机号码" keyboard="number" is-type="china-mobile" :show-clear="false"></x-input>
+                <address title="省市区" :value.sync="aeditVal" raw-value :list="addressData"></address>
+                <x-input title="详细地址" :value.sync="aeditTxt" placeholder="无需再写省市区" :show-clear="false"></x-input>
+            </div>
         </div>
 
-        <!-- 日期选择 -->
-        <inline-calendar class="v-calendar" :class="calendarShow ? 'z-crt' : ''" :value.sync="calendarVal" :start-date="startDate" :end-date="endDate" :highlight-weekend="highlightWeekend" :weeks-list="weeksList">
-        </inline-calendar>
     </div>
 </template>
 
@@ -109,7 +187,11 @@ import {
     Cell,
     XInput,
     InlineCalendar,
+    Address,
+    AddressChinaData,
 } from 'vux/src/components'
+
+import value2name from 'vux/src/filters/value2name'
 
 
 export default {
@@ -119,19 +201,40 @@ export default {
         Cell,
         XInput,
         InlineCalendar,
+        Address,
+        AddressChinaData,
+        value2name,
     },
     data() {
         return {
+            // 内页切换
+            status: '2',
+            // 数据
             sendOptions: ['送货上门', '到店自提', '到店安装', '上门安装'],
             sendVal: '送货上门',
             // 日期选择
-            calendarVal: '',
             calendarShow: false,
             startDate: '2016-08-29',
             endDate: '2016-10-07',
             highlightWeekend: true,
             weeksList: ['日', '一', '二', '三', '四', '五', '六 '],
 
+            // 收货人信息
+            linkName: '张三',
+            linkTel: '12334234234',
+            linkAddress: '厦门市思明区湖里大道站工地看风景的达到304#23号',
+            linkDate: '2016-10-10',
+
+            // 列表
+            addrList: [],
+
+            // 编辑收货地址
+            addressData: AddressChinaData,
+            aeditName: '',
+            aeditTel: '',
+            aeditVal: ['福建省', '厦门市', '思明区'],
+            aeditTxt: '',
+            aeditCon: '',
         }
     },
     created() {
@@ -187,11 +290,39 @@ export default {
     transform: scaleY(.5);
 }
 
+@mixin borderBottom {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-bottom: 1px solid #cecece;
+    transform: scaleY(.5);
+}
+
+@mixin borderLeft {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-left: 1px solid #cecece;
+    transform: scaleX(.5);
+}
+
 .v-order {
     box-sizing: border-box;
     overflow-x: hidden;
     background: #efefef;
     padding: 44px 0;
+}
+
+.v-alist {
+    padding-top: 44px;
+}
+
+.v-aedit {
+    padding-top: 44px;
 }
 
 .v-hd {
@@ -213,6 +344,8 @@ export default {
     // flex: 1;
 }
 
+.v-bd-1 {}
+
 // 底部菜单
 .v-ft {
     position: fixed;
@@ -224,7 +357,7 @@ export default {
     height: 44px;
     line-height: 44px;
     text-align: center;
-    background: rgba(255, 255, 255, .9);
+    background: #fff;
     color: #666;
     &:before {
         @include borderTop;
@@ -389,7 +522,72 @@ export default {
     }
 }
 
-.f-red {
+// 1-收货地址
+.v-addrbd {
+    position: relative;
+    display: flex;
+    padding: 0 0 5px 15px;
+    background: #fff;
+    &:before {
+        @include borderBottom;
+    }
+    .stat {
+        padding: 15px 10px 0 0;
+        font-size: 20px;
+        color: #f00;
+    }
+    .cont {
+        // flex: 1;
+        .hd {
+            display: flex;
+            line-height: 20px;
+            padding: 5px 0;
+            .name {
+                flex: 1;
+            }
+            .tel {
+                text-align: right;
+            }
+        }
+        .bd {
+            line-height: 18px;
+            font-size: 14px;
+            color: #666;
+            .defa {
+                display: inline-block;
+                line-height: 14px;
+                margin-right: 5px;
+                padding: 1px 5px;
+                background: #f00;
+                color: #fff;
+            }
+        }
+    }
+    .edit {
+        flex: 1;
+        position: relative;
+        margin-top: 15px;
+        margin-left: 15px;
+        padding: 0 15px;
+        height: 44px;
+        line-height: 44px;
+        text-align: center;
+        background: #fff;
+        color: #666;
+        &:before {
+            @include borderLeft;
+        }
+        i {
+            font-size: 18px;
+        }
+    }
+}
+
+.f-c1 {
+    color: #fff;
+}
+
+.f-c2 {
     color: #f00;
 }
 </style>
