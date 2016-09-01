@@ -3,7 +3,7 @@
         <!-- 头部 -->
         <x-header :left-options="{showBack: false}" class="v-hd">
             付款
-            <i class="iconfont v-back" slot="left">&#xe602;</i>
+            <i class="iconfont v-back" slot="left" @click="goback">&#xe602;</i>
         </x-header>
 
         <div class="v-bd">

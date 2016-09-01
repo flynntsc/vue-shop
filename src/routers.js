@@ -97,5 +97,33 @@ export default function (router) {
                 require(['./views/payment.vue'], res);
             }
         },
+        // 我的（普通客户：消费者）
+        '/my': {
+            name: 'my',
+            component(res) {
+                require(['./views/my.vue'], res);
+            }
+        },
+        // 我的（普通客户：消费者）
+        '/my': {
+            name: 'my',
+            component(res) {
+                require(['./views/my.vue'], res);
+            }
+        },
+        // 我的订单列表
+        '/my-order-list': {
+            name: 'my-order-list',
+            component(res) {
+                require(['./views/my-order-list.vue'], res);
+            }
+        },
+        // 我的订单详情
+        '/my-order-detail': {
+            name: 'my-order-detail',
+            component(res) {
+                require(['./views/my-order-detail.vue'], res);
+            }
+        },
     })
 }

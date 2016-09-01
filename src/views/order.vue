@@ -68,21 +68,7 @@
                         <div class="v-cellhd">
                             <div class="hd">汇管车平台自营店</div>
                         </div>
-                        <div class="v-cellbd">
-                            <div class="hd">
-                                <img src="http://temp.im/80x80" alt="" class="img">
-                            </div>
-                            <div class="bd">
-                                <div class="v-txt">
-                                    <div class="name">米其林圣诞节佛寺的金佛 米其林圣诞节佛寺的金佛寺的见风使舵都是是的寺的见风使舵都是是的</div>
-                                    <div class="sku">规格</div>
-                                    <div class="nums">
-                                        <div class="pri f-c2">￥23.30</div>
-                                        <div class="num">x2</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <productcell :proslist="proscellList"></productcell>
                         <div class="v-cellbd">
                             <div class="bd">运费</div>
                             <div class="ft f-c2">+ 0.00</div>
@@ -192,6 +178,7 @@ import {
 } from 'vux/src/components'
 
 import value2name from 'vux/src/filters/value2name'
+import productcell from '../components/product-cell'
 
 
 export default {
@@ -204,11 +191,12 @@ export default {
         Address,
         AddressChinaData,
         value2name,
+        productcell
     },
     data() {
         return {
             // 内页切换
-            status: '2',
+            status: '0',
             // 数据
             sendOptions: ['送货上门', '到店自提', '到店安装', '上门安装'],
             sendVal: '送货上门',
@@ -235,6 +223,21 @@ export default {
             aeditVal: ['福建省', '厦门市', '思明区'],
             aeditTxt: '',
             aeditCon: '',
+
+            // 订单中的所含产品临时变量
+            proscellList: [{
+                img: 'http://temp.im/80x80',
+                name: '产品名称11123123',
+                sku: '123',
+                pri: '99992.00',
+                num: 2,
+            }, {
+                img: 'http://temp.im/80x80',
+                name: '产品名称11123123',
+                sku: '123',
+                pri: '99992.00',
+                num: 2,
+            }]
         }
     },
     created() {
@@ -453,9 +456,10 @@ export default {
 }
 
 .v-cellhd {
+    position: relative;
     background: #fff;
-    &+.v-cellbd:before {
-        @include borderTop;
+    &:after {
+        @include borderBottom;
     }
     .hd {
         padding: 10px 15px;
@@ -468,8 +472,11 @@ export default {
     margin-left: 15px;
     padding-right: 15px;
     background: #fff;
-    &+.v-cellbd:before {
-        @include borderTop;
+    &:after {
+        @include borderBottom;
+    }
+    &:last-child::after {
+        border-width: 0;
     }
     .hd {
         padding: 10px 0;
@@ -490,35 +497,6 @@ export default {
         padding: 10px 0;
         white-space: nowrap;
         text-align: right;
-    }
-}
-
-.v-txt {
-    padding-left: 10px;
-    line-height: 20px;
-    .name {
-        display: -webkit-box;
-        height: 40px;
-        line-height: 20px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        font-size: 14px;
-    }
-    .sku {
-        font-size: 12px;
-        color: #666;
-    }
-    .nums {
-        position: relative;
-        .num {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            font-size: 12px;
-            color: #666;
-        }
     }
 }
 
