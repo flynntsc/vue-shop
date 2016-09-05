@@ -168,24 +168,24 @@ function coupons(bool = false) {
 // 店铺首页
 function shopIndex() {
     return {
-        shop: myDay(),
-        backgroundImage: myImg('320x110'),
-        logo: myImg(80),
+        supplierId: myDay(),
+        shop_banner: myImg('320x110'),
+        shop_logo: myImg(80),
         name: myStr('店铺名称'),
-        sales: myDay(),
-        total: myNum2(),
-        isSenior: iBoolean.random(),
-        swiperList: [{
+        order_amount: myDay(),
+        good_amount: myNum2(),
+        authen_flag: iBoolean.random(),
+        slideList: [{
             url: 'javascript:',
-            img: myImg('320x180'),
+            content: myImg('320x180'),
             title: '说明文字可有可无'
         }, {
             url: 'javascript:',
-            img: myImg('320x180'),
+            content: myImg('320x180'),
             title: '说明文字可有可无'
         }, {
             url: 'javascript',
-            img: myImg('320x180'),
+            content: myImg('320x180'),
             title: '说明文字可有可无'
         }],
         hotList: eachFn(prosList2, 6),
@@ -288,10 +288,8 @@ module.exports = function () {
         'coupons-update.htm': {
             EXPLAIN: '抵用券更新数据，POST提交地址',
         },
-        'shop-index.htm': {
-            EXPLAIN: '店铺首页',
-            rows: shopIndex(),
-        },
+        // 店铺首页
+        'shop-index.htm': shopIndex(),
         'shop-categorys.htm': {
             EXPLAIN: '店铺分类页',
             ARGUMENT: '店铺id（shop=id）',

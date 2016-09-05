@@ -136,7 +136,7 @@ export default {
     ready() {
         let shop = this.$route.query.shop || 0
         let pro = this.$route.query.pro || 0
-        let url = `/app/shopping/product-detail.htm?shop=${shop}&pro=${pro}`
+        let url = `/api/shopping/product-detail.htm?shop=${shop}&pro=${pro}`
         this.$http.get(url).then(res => {
             if (res.ok) {
                 this.productData = Object.assign({}, JSON.parse(res.data).rows)

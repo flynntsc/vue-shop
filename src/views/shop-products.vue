@@ -54,7 +54,7 @@ export default {
     ready() {
         // 根据url参数请求相应数据
         let getRes = (url, sort, type = 0) => {
-            this.$http.get(`/app/shopping/${url}?shop=${this.shop}&word=${this.searchVal}&sort=${this.sort}`).then(res => {
+            this.$http.get(`/api/shopping/${url}?shop=${this.shop}&word=${this.searchVal}&sort=${this.sort}`).then(res => {
                 if (res.ok) {
                     console.log(res)
                     let rows = JSON.parse(res.data).rows;
@@ -106,7 +106,7 @@ export default {
                 })
             }
 
-            getData('/app/shopping/storeKeySearch.htm')
+            getData('/api/shopping/storeKeySearch.htm')
         },
         getResult() {
             // 显示搜索历史词
@@ -121,7 +121,7 @@ export default {
                 })
             }
 
-            getData('/app/shopping/productKeySearch.htm')
+            getData('/api/shopping/productKeySearch.htm')
         },
         resultClick(val) {
             // 将搜索词保存
@@ -156,7 +156,7 @@ export default {
                 arg = `&order=${this.tabPrice}`
             }
             this.tabProsNum = num
-            url = `/app/shopping/productSearch.htm?word=${this.searchVal}&sort=${num + arg}`
+            url = `/api/shopping/productSearch.htm?word=${this.searchVal}&sort=${num + arg}`
             this.$http.get(url).then(res => {
                 if (res.ok) {
                     this.prosList = JSON.parse(res.data).rows

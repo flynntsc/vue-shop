@@ -140,7 +140,7 @@ export default {
         this.shop = this.$route.query.shop || 0
     },
     ready() {
-        const url = `/app/shopping/shop-index.htm?shop=${this.shop}`
+        const url = `/api/shopping/shop-index.htm?shop=${this.shop}`
         this.$http.get(url).then(res => {
             if (res.ok) {
                 this.indexData = Object.assign({}, JSON.parse(res.data).rows)

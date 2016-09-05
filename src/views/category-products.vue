@@ -93,7 +93,7 @@ export default {
     },
     ready() {
         this.categoryId = this.$route.query.id || 0
-        this.$http.get(`/app/shopping/productSearch.htm?id=${this.categoryId}&sort=${this.tabProsNum}`).then(res => {
+        this.$http.get(`/api/shopping/productSearch.htm?id=${this.categoryId}&sort=${this.tabProsNum}`).then(res => {
             if (res.ok) {
                 let data = JSON.parse(res.data)
                 this.prosList = data.rows
@@ -115,7 +115,7 @@ export default {
                 arg = `&order=${this.tabPrice}`
             }
             this.tabProsNum = num
-            url = `/app/shopping/productSearch.htm?id=${this.categoryId}&sort=${num + arg}`
+            url = `/api/shopping/productSearch.htm?id=${this.categoryId}&sort=${num + arg}`
             this.$http.get(url).then(res => {
                 if (res.ok) {
                     this.prosList = JSON.parse(res.data).rows
@@ -140,7 +140,7 @@ export default {
             // 针对价格情况
             let queryOrder = this.tabProsNum === 2 ? `&order=${this.tabPrice}` : ''
 
-            this.$http.get(`/app/shopping/productSearch.htm?id=${this.categoryId}&sort=${this.tabProsNum}&brand=${brandVal}&width=${widthVal}&server=${serverVal}&price1=${this.priceVal1}&price2=${this.priceVal2}${queryOrder}`).then(res => {
+            this.$http.get(`/api/shopping/productSearch.htm?id=${this.categoryId}&sort=${this.tabProsNum}&brand=${brandVal}&width=${widthVal}&server=${serverVal}&price1=${this.priceVal1}&price2=${this.priceVal2}${queryOrder}`).then(res => {
                 if (res.ok) {
                     let data = JSON.parse(res.data)
                     this.prosList = data.rows

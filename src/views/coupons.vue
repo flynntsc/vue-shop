@@ -63,7 +63,7 @@ export default {
         }
     },
     ready() {
-        this.$http.get('/app/shopping/coupons.htm').then(res => {
+        this.$http.get('/api/shopping/coupons.htm').then(res => {
             if (res.ok) {
                 let data = JSON.parse(res.data)
                 this.noGetList = data.rows
@@ -80,7 +80,7 @@ export default {
             this.noGetList.splice(key, 1)
 
             // 提交数据变更
-            // this.$http.past('/app/shopping/coupons-update.htm').then(res => {
+            // this.$http.past('/api/shopping/coupons-update.htm').then(res => {
             //     console.log(res.ok)
             // })
         },

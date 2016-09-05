@@ -29,20 +29,21 @@
 
         <div class="v-wrap">
             <!-- 店铺头部 -->
-            <div class="v-shophd" :style="{backgroundImage:'url('+indexData.backgroundImage+')'}">
-                <div class="logo"></div>
+            <div class="v-shophd" :style="{backgroundImage:'url('+(indexData.shop_banner || imgFill)+')'}">
+                <div class="logo" :style="{backgroundImage:'url('+(indexData.shop_logo || imgFill)+')'}"></div>
                 <div class="data">
                     <div class="name">{{indexData.name}}</div>
-                    <div class="nums">销量{{indexData.sales}} 共{{indexData.total}}件商品</div>
-                    <div class="more" v-if="indexData.isSenior">
+                    <div class="nums">销量{{indexData.order_amount}} 共{{indexData.good_amount}}件商品</div>
+                    <div class="more" v-if="indexData.authen_flag">
                         <div class="ren">认</div> 企业实名认证
                     </div>
+                    <div class="more" v-else>未认证</div>
                 </div>
                 <div class="mark"></div>
             </div>
 
             <!-- 轮播图 -->
-            <swiper :list="indexData.swiperList" :auto="true" class="v-swiper"></swiper>
+            <swiper :list="indexData.slideList" :auto="true" class="v-swiper"></swiper>
 
             <!-- 优惠劵 -->
             <div class="v-coupons">
@@ -71,15 +72,15 @@
             <div class="v-list">
                 <div class="title">新品上市</div>
                 <div class="v-prolist">
-                    <div class="v-pro" v-for="items of indexData.newList" v-link="{path:'product-detail',query:{shop:items.shop,pro:items.id}}">
+                    <div class="v-pro" v-for="items of indexData.goodsList" v-link="{path:'product-detail',query:{shop:indexData.supplierId,pro:items.id}}">
                         <div class="hd">
-                            <img :src="items.image" alt="" class="img">
+                            <img :src="items.content" alt="" class="img">
                         </div>
                         <div class="bd">
-                            <div class="name">{{items.name}}</div>
+                            <div class="name">{{items.goods_name || '产品名缺省'}}</div>
                             <div class="data">
-                                <span class="pri">￥{{items.price}}</span>
-                                <span class="sales">已售出：{{items.sales}}件</span>
+                                <span class="pri">￥{{items.current_price}}</span>
+                                <span class="sales">已售出：{{items.hz_goods_sku.sale_num || 0}}件</span>
                             </div>
                         </div>
                     </div>
@@ -117,30 +118,35 @@ export default {
     data() {
         return {
             // 店铺id
-            shop: '',
+            supplierId: '',
+            // 缺省图片
+            imgFill: 'http://temp.im/320x320',
             indexData: {
-                shop: '',
-                backgroundImage: '',
-                logo: '',
+                supplierId: '',
+                shop_banner: '',
+                shop_logo: '',
                 name: '',
-                sales: '',
-                total: '',
-                isSenior: false,
-                swiperList: [],
+                order_amount: '',
+                good_amount: '',
+                authen_flag: false,
+                slideList: [],
                 hotList: [],
                 newList: [],
+                goodsList: [],
             }
         }
     },
     created() {
         // 获取店铺id
-        this.shop = this.$route.query.shop || 0
+        this.supplierId = this.$route.query.supplierId || 0
     },
     ready() {
-        const url = `/app/shopping/shop-index.htm?shop=${this.shop}`
+        const url = `/api/shopping/supplier/index.htm?supplierId=${this.supplierId}`
         this.$http.get(url).then(res => {
+            console.log(res)
             if (res.ok) {
-                this.indexData = Object.assign({}, JSON.parse(res.data).rows)
+                this.indexData = Object.assign({}, JSON.parse(res.data))
+                console.log(this.indexData.name)
             }
         })
     },

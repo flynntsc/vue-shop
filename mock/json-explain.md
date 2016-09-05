@@ -15,7 +15,7 @@
 
 - hot-pros
 
-接口url请求地址，并统一加前缀 `/app/`
+接口url请求地址，并统一加前缀 `/api/`
 
 请求参数个数统一使用?number=个数
 
@@ -44,8 +44,8 @@ $.ajax({
 
 ***
 
-- [首页](http://10.1.6.80:8088/hczd-club/app/shopping/index.htm)
-- [主页新品](http://10.1.6.80:8088/hczd-club/app/shopping/new_products.htm)
-- [商品搜索关键词](http://10.1.6.80:8088/hczd-club/app/shopping/productKeySearch.htm) ?keyWords=
-- [店铺搜索关键词](http://10.1.6.80:8088/hczd-club/app/shopping/storeKeySearch.htm)?keyWords=
-- [店铺页面](http://10.1.6.80:8088/hczd-club/app/shopping/storeList.htm)?keyWords=
+- [首页](http://10.1.6.80:8088/hczd-club/api/shopping/index.htm)
+- [主页新品](http://10.1.6.80:8088/hczd-club/api/shopping/new_products.htm)
+- [商品搜索关键词](http://10.1.6.80:8088/hczd-club/api/shopping/productKeySearch.htm) ?keyWords=
+- [店铺搜索关键词](http://10.1.6.80:8088/hczd-club/api/shopping/storeKeySearch.htm)?keyWords=
+- [店铺页面](http://10.1.6.80:8088/hczd-club/api/shopping/storeList.htm)?keyWords=*&sort=*

@@ -94,11 +94,11 @@
             <div class="v-prolist">
                 <div class="v-pro" v-for="items of hotPros" v-link="{path:'product-detail',query:{shop:items.shop,pro:items.id}}">
                     <div class="hd">
-                        <img :src="items.image" :alt="items.name" class="img">
+                        <img :src="items.picture_url" :alt="items.goods_name" class="img">
                     </div>
                     <div class="bd">
-                        <div class="pri">￥{{items.price}}</div>
-                        <div class="name">{{items.name}}</div>
+                        <div class="pri">￥{{items.current_price}}</div>
+                        <div class="name">{{items.goods_name}}</div>
                     </div>
                 </div>
             </div>
@@ -111,11 +111,11 @@
             <div class="v-prolist">
                 <div class="v-pro" v-for="items of newPros" v-link="{path:'product-detail',query:{shop:items.shop,pro:items.id}}">
                     <div class="hd">
-                        <img :src="items.image" :alt="items.name" class="img">
+                        <img :src="items.picture_url" :alt="items.goods_name" class="img">
                     </div>
                     <div class="bd">
-                        <div class="pri">￥{{items.price}}</div>
-                        <div class="name">{{items.name}}</div>
+                        <div class="pri">￥{{items.current_price}}</div>
+                        <div class="name">{{items.goods_name}}</div>
                     </div>
                 </div>
             </div>
@@ -144,13 +144,13 @@
 
     <!-- 机油 -->
     <div class="v-pros">
-        <tab>
+        <!-- <tab>
             <tab-item :selected="true">机油</tab-item>
             <tab-item></tab-item>
             <tab-item></tab-item>
-        </tab>
+        </tab> -->
         <!-- 机油产品 -->
-        <div class="v-list">
+        <!-- <div class="v-list">
             <div class="v-prolist">
                 <div class="v-pro" v-for="items of cat1Pros" v-link="{path:'product-detail',query:{shop:items.shop,pro:items.id}}">
                     <div class="hd">
@@ -165,7 +165,7 @@
             <div class="f-tac">
                 <spinner :type="ios" slot="value" v-show="disCat1"></spinner>
             </div>
-        </div>
+        </div> -->
     </div>
 
 </template>
@@ -219,7 +219,7 @@ export default {
     },
     ready() {
         // 初始化热销产品
-        this.$http.get('/app/shopping/index.htm').then(res => {
+        this.$http.get('/api/shopping/index.htm').then(res => {
             if (res.ok) {
                 this.hotPros = JSON.parse(res.data).rows
                 this.disHot = false
@@ -227,7 +227,7 @@ export default {
         })
 
         // 初始化机油产品
-        this.$http.get('/app/shopping/index.htm').then(res => {
+        this.$http.get('/api/shopping/index.htm').then(res => {
             if (res.ok) {
                 this.cat1Pros = JSON.parse(res.data).rows
                 this.disCat1 = false
@@ -268,9 +268,9 @@ export default {
             }
 
             if (this.catsVal === '店铺') {
-                getData('/app/shopping/storeKeySearch.htm')
+                getData('/api/shopping/storeKeySearch.htm')
             } else {
-                getData('/app/shopping/productKeySearch.htm')
+                getData('/api/shopping/productKeySearch.htm')
             }
         },
         // 点击关键词
@@ -289,12 +289,12 @@ export default {
             }
 
             this.catsVal === '店铺' ? addHisWord('wehgc-pros') : addHisWord('wehgc-shop')
-            this.$router.go(`/search?type=${this.catsVal}&word=${val.title}&sort=0`)
+            this.$router.go(`/search?type=${this.catsVal}&keyWords=${val.title}&sort=0`)
         },
         tabNewSel() {
             this.tabSel = 1
             if (this.disNew) {
-                this.$http.get('/app/shopping/new_products.htm').then(res => {
+                this.$http.get('/api/shopping/new_products.htm').then(res => {
                     if (res.ok) {
                         this.newPros = JSON.parse(res.data).rows
                         this.disNew = false
@@ -305,13 +305,12 @@ export default {
         tabLovSel() {
             this.tabSel = 2
             if (this.disLov) {
-                this.$http
-                    .get('/app/shopping/like_products.htm').then(res => {
-                        if (res.ok) {
-                            this.lovPros = JSON.parse(res.data).rows
-                            this.disLov = false
-                        }
-                    })
+                this.$http.get('/api/shopping/like_products.htm').then(res => {
+                    if (res.ok) {
+                        this.lovPros = JSON.parse(res.data).rows
+                        this.disLov = false
+                    }
+                })
             }
         },
     },
@@ -450,6 +449,10 @@ export default {
 
 .f-tac {
     text-align: center;
+}
+
+img:empty {
+    content: 'kongbai'
 }
 </style>
 <style lang="scss">

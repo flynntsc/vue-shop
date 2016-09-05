@@ -50,7 +50,7 @@ export default {
     },
     ready() {
         this.shop = this.$route.query.shop || 0
-        let url = `/app/shopping/shop-categorys.htm?shop=${this.shop}`
+        let url = `/api/shopping/shop-categorys.htm?shop=${this.shop}`
         this.$http.get(url).then(res => {
             if (res.ok) {
                 this.categoryList = JSON.parse(res.data).rows

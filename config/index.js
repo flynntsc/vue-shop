@@ -2,24 +2,26 @@
 var path = require('path')
 
 // 切换数据来源=本地虚拟/线上提供
-var isNode = 1
-var proxyTable = isNode ? {
+var isDev = 0
+var configDev = {
     // proxy all requests starting with /api to jsonplaceholder
-    '/app/shopping': {
+    '/api': {
         // http://jsonplaceholder.typicode.com or http://api.icndb.com/jokes/random
         target: 'http://localhost:3000',
         changeOrigin: true,
         pathRewrite: {
-            '^/app/shopping': ''
+            '^/api': ''
         }
     }
-} : {
-    '/app/shopping': {
-        target: 'http://10.1.6.80:8088/hczd-club',
+}
+var configPro = {
+    '/api': {
+        target: 'http://10.1.6.33:8080/hczd-club',
         changeOrigin: true,
         pathRewrite: {}
     }
 }
+var proxyTable = isDev ? configDev : configPro
 
 module.exports = {
     build: {
@@ -38,7 +40,7 @@ module.exports = {
     },
     dev: {
         env: require('./dev.env'),
-        port: 8080,
+        port: 8000,
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         proxyTable: proxyTable,

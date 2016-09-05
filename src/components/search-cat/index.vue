@@ -157,6 +157,8 @@ export default {
     margin-top: 0;
     overflow-y: auto;
     height: 100%;
+    box-sizing: border-box;
+    padding-bottom: 44px;
 }
 
 .vux-search-mask {
