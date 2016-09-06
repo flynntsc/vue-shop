@@ -1,14 +1,14 @@
 <template>
     <div class="v-pbd">
-        <div class="v-pro" v-for="items of proslist">
+        <div class="v-pro" v-for="items of proslist" v-link="{path:'product-detail.htm',query:{pro:items.goods_id}}">
             <div class="lbox">
-                <img :src="items.image" :alt="items.name" class="img">
+                <img :src="items.image" :alt="items.goods_name" class="img">
             </div>
             <div class="rbox">
-                <div class="name">{{items.name}}</div>
-                <div class="price">￥{{items.price}}</div>
-                <div class="num">月销量{{items.sales}}件</div>
-                <div class="cart" @click="cart-click"><i class="iconfont">&#xe601;</i></div>
+                <div class="name">{{items.goods_name}}</div>
+                <div class="price">￥{{items.current_price}}</div>
+                <div class="num">月销量{{items.current_sales}}件</div>
+                <!-- <div class="cart" @click="cart-click"><i class="iconfont">&#xe601;</i></div> -->
             </div>
         </div>
     </div>

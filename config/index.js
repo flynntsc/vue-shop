@@ -16,7 +16,9 @@ var configDev = {
 }
 var configPro = {
     '/api': {
-        target: 'http://10.1.6.33:8080/hczd-club',
+        // target: 'http://10.1.6.80:8088/hczd-club', //标
+        target: 'http://10.1.6.242:8080/hczd-club', //永
+        // target: 'http://10.1.6.33:8080/hczd-club', //王
         changeOrigin: true,
         pathRewrite: {}
     }

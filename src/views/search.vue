@@ -70,6 +70,8 @@ export default {
     },
     data() {
         return {
+            // 当前客户id
+            customerId: '',
             // 搜索
             catsArr: ['商品', '店铺'],
             catsVal: '商品',
@@ -91,7 +93,7 @@ export default {
         // 根据url参数请求相应数据
         let getRes = (url, sort, type = 0) => {
             this.$http.get(`/api/shopping/${url}?keyWords=${this.searchVal}&sort=${sort}`).then(res => {
-                console.log(res.url)
+                console.log(sort)
                 if (res.ok) {
                     let rows = JSON.parse(res.data).rows;
                     !type ? this.prosList = rows : this.shopList = rows
@@ -200,6 +202,7 @@ export default {
         },
         // tab切换显示-商品
         tabProsFn(n) {
+            console.log(n)
             let num = n || 0,
                 arg = '',
                 url = ''
@@ -213,6 +216,7 @@ export default {
             this.tabProsNum = num
             url = `/api/shopping/productSearch.htm?keyWords=${this.searchVal}&sort=${num + arg}`
             this.$http.get(url).then(res => {
+                console.log(res.url)
                 if (res.ok) {
                     this.prosList = JSON.parse(res.data).rows
                 }
