@@ -34,8 +34,8 @@
                             <div class="detail">
                                 <div class="name">{{items.name}}</div>
                                 <div class="num">
-                                    <span class="sales">销量{{items.sales}}</span>
-                                    <span class="total">共{{items.total}}件商品</span>
+                                    <span class="sales">销量{{items.order_amount}}</span>
+                                    <span class="total">共{{items.good_amount}}件商品</span>
                                 </div>
                             </div>
                         </div>
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="v-shopbd">
-                        <div class="pro" v-for="item of items.list"><img :src="item.image" alt="" class="img"></div>
+                        <div class="pro" v-for="item of items.hz_Goods_TopSales"><img :src="item.picture_url" v-link="{path: 'product-detail',query:{pro:item.good_id}}" alt="" class="img"></div>
                     </div>
                 </div>
             </div>
@@ -105,7 +105,7 @@ export default {
         let sort = this.$route.query.sort || 0
         this.searchPhr = this.searchVal = this.$route.query.keyWords || ''
         this.catsVal = this.$route.query.type || '商品'
-        this.catsVal === '店铺' ? getRes('storeList.htm', sort, 0) : getRes('productSearch.htm', sort)
+        this.catsVal === '店铺' ? getRes('storeList.htm', sort, 1) : getRes('productSearch.htm', sort)
     },
     methods: {
         // 返回
@@ -228,7 +228,6 @@ export default {
             this.tabShopNum = num
             url = `/api/shopping/storeList.htm?keyWords=${this.searchVal}&sort=${num}`
             this.$http.get(url).then(res => {
-                console.dir(res.data)
                 if (res.ok) {
                     this.shopList = JSON.parse(res.data).rows
                 }

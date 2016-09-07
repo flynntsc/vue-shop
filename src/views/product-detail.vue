@@ -11,21 +11,21 @@
         <div class="v-detail">
             <div class="v-detailhd">
                 <!-- 轮播图 -->
-                <swiper :list="productData.img_list" class="v-swiper"></swiper>
+                <swiper :list="productData.hz_goods_picture" class="v-swiper"></swiper>
                 <!-- 信息 -->
                 <div class="v-prodtl">
-                    <div class="name">{{productData.name}}</div>
+                    <div class="name">{{productData.goods.goods_name}}</div>
                     <div class="share">
                         <i class="iconfont">&#xe604;</i>
                         <div class="c">分享</div>
                     </div>
                     <div class="price">
-                        <div class="pri1">￥{{productData.price}}</div>
-                        <del class="pri2" v-if="productData.price < productData.price_origin">￥{{productData.price_origin}}</del>
+                        <div class="pri1">￥{{productData.goods.price_new || productData.goods.current_price}}</div>
+                        <del class="pri2" v-if="productData.goods.price_new < productData.goods.current_price">￥{{productData.goods.current_price}}</del>
                     </div>
                     <div class="info">
-                        <div class="l">运费: {{productData.freightage}}</div>
-                        <div class="m">月销量: {{productData.sales}}</div>
+                        <div class="l">运费: {{productData.freightage || 0}}</div>
+                        <div class="m">月销量: {{productData.total_sales || 0}}</div>
                         <div class="r">{{productData.address}}</div>
                     </div>
                 </div>
@@ -41,11 +41,11 @@
                     </cell>
                 </div>
                 <div class="v-myshop">
-                    <div class="hd">顾客旗舰店</div>
+                    <div class="hd">{{productData.goods.supplier}}</div>
                     <div class="bd">
                         <div class="mark" v-show="productData.shop_collect" @click="markShop(0)"><i class="iconfont">&#xe608;</i> 收藏店铺</div>
                         <div class="mark z-act" @click="markShop(1)" v-else><i class="iconfont">&#xe607;</i> 收藏店铺</div>
-                        <div class="link">进入店铺</div>
+                        <div class="link" v-link="{path:'shop',query:{shop:productData.goods.supplier_id}}">进入店铺</div>
                     </div>
                 </div>
             </div>
@@ -80,7 +80,7 @@
             </div>
             <div class="markpro">
                 <i class="iconfont" v-show="productData.pros_collect" @click="markpro(0)">&#xe606;</i>
-                <i class="iconfont z-act" @click="markpro(1)" v-else>&#xe609;</i>
+                <i class="iconfont z-act" @click="markpro(1)" v-show="!productData.pros_collect">&#xe609;</i>
             </div>
             <div class="cart">加入购物车</div>
             <div class="buy">立即购买</div>
@@ -111,18 +111,26 @@ export default {
     data() {
         return {
             // 头部
+            // 客户id
+            customerId: '',
             shop: '',
             pro: '',
+            goods_id: '',
             productData: {
                 shop: '',
                 id: '',
-                name: '',
-                img_list: [],
+                goods: {
+                    current_price: '0',
+                    price_new: '0',
+                },
+                hz_goods_picture: [],
                 price: '',
                 price_origin: '',
-                sales: '',
+                total_sales: '',
                 freightage: '',
                 detail: '',
+                // 收藏后获得的id
+                collect_id: '',
                 shop_collect: false,
                 pros_collect: false,
             },
@@ -134,22 +142,46 @@ export default {
         }
     },
     ready() {
-        let shop = this.$route.query.shop || 0
         let pro = this.$route.query.pro || 0
-        let url = `/api/shopping/product-detail.htm?shop=${shop}&pro=${pro}`
+        let url = `/api/shopping/goods_details.htm?goods_id=${pro}`
         this.$http.get(url).then(res => {
+            console.log(res)
             if (res.ok) {
-                this.productData = Object.assign({}, JSON.parse(res.data).rows)
+                this.productData = Object.assign({}, JSON.parse(res.data))
+
+                // 手动转换数组属性
+                this.productData.hz_goods_picture.img = this.productData.hz_goods_picture
+                this.productData.hz_goods_picture = this.productData.hz_goods_picture.map(v => {
+                    v.img = v.picture_url
+                    return v
+                })
             }
         })
     },
     methods: {
+        markFn(id, type) {
+
+        },
         markShop(bool) {
             this.productData.shop_collect = !!bool
                 // ajax传送给服务器
         },
         markpro(bool) {
+            let id = this.pro,
+                type = 'goods',
+                collect_id = 0
             this.productData.pros_collect = !!bool
+            console.log(this.productData.pros_collect)
+            let url = `/api/shopping/favorite_save.htm?goods_id=${id}&customerId=${type}`,
+                url2 = `/app/shopping/favorite_remove.htm?id=${collect_id}`
+            this.$http.get(url).then(res => {
+                if (res.ok) {
+                    this.productData.collect_id = JSON.parse(res.data).collect_id
+
+                    // 先解决未登陆问题
+                    console.log(JSON.parse(res.data))
+                }
+            })
         },
         tabArgs() {
             this.tabSel = 1
