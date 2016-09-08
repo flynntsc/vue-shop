@@ -5,7 +5,7 @@
             <!-- 头部 -->
             <x-header :left-options="{showBack: false}" class="v-hd">
                 确认订单
-                <i class="iconfont v-back" slot="left">&#xe602;</i>
+                <i class="iconfont v-back" slot="left" @click="goback">&#xe602;</i>
             </x-header>
 
 
@@ -109,7 +109,7 @@
             <!-- 头部 -->
             <x-header :left-options="{showBack: false}" class="v-hd">
                 收货地址
-                <i class="iconfont v-back" slot="left">&#xe602;</i>
+                <i class="iconfont v-back" slot="left" @click="goback">&#xe602;</i>
                 <span class="f-c1" slot="right">新建</span>
             </x-header>
 
@@ -151,7 +151,7 @@
             <!-- 头部 -->
             <x-header :left-options="{showBack: false}" class="v-hd">
                 收货地址
-                <i class="iconfont v-back" slot="left">&#xe602;</i>
+                <i class="iconfont v-back" slot="left" @click="goback">&#xe602;</i>
                 <span class="f-c1" slot="right">保存</span>
             </x-header>
 

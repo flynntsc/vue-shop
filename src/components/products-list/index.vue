@@ -1,6 +1,6 @@
 <template>
     <div class="v-pbd">
-        <div class="v-pro" v-for="items of proslist" v-link="{path:'product-detail.htm',query:{pro:items.goods_id}}">
+        <div class="v-pro" v-for="items of proslist" v-link="{path:'product-detail',query:{pro:items.goods_id}}">
             <div class="lbox">
                 <img :src="items.image" :alt="items.goods_name" class="img">
             </div>
@@ -8,7 +8,7 @@
                 <div class="name">{{items.goods_name}}</div>
                 <div class="price">￥{{items.current_price}}</div>
                 <div class="num">月销量{{items.current_sales}}件</div>
-                <!-- <div class="cart" @click="cart-click"><i class="iconfont">&#xe601;</i></div> -->
+                <!-- <div class="cart" v-link="{path:'cart'}"><i class="iconfont">&#xe601;</i></div> -->
             </div>
         </div>
     </div>

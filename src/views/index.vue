@@ -8,7 +8,7 @@
         <div class="v-search">
             <search-cat @result-click="resultClick" @on-change="getResult" @del-history="delHistory" :results="results" :value.sync="searchVal" :cats="catsArr" :cats-val.sync="catsVal" :placeholder="searchPhr"></search-cat>
         </div>
-        <div class="v-cart">
+        <div class="v-cart" v-link="{path:'cart'}">
             <i class="iconfont">&#xe601;</i>
         </div>
     </div>
@@ -92,7 +92,7 @@
         <!-- tab热销产品 -->
         <div class="v-list" v-show="tabSel === 0">
             <div class="v-prolist">
-                <div class="v-pro" v-for="items of hotPros" v-link="{path:'product-detail',query:{shop:items.shop,pro:items.id}}">
+                <div class="v-pro" v-for="items of hotPros" v-link="{path:'product-detail',query:{pro:items.id}}">
                     <div class="hd">
                         <img :src="items.picture_url" :alt="items.goods_name" class="img">
                     </div>
@@ -109,7 +109,7 @@
         <!-- tab新品产品 -->
         <div class="v-list" v-show="tabSel === 1">
             <div class="v-prolist">
-                <div class="v-pro" v-for="items of newPros" v-link="{path:'product-detail',query:{shop:items.shop,pro:items.id}}">
+                <div class="v-pro" v-for="items of newPros" v-link="{path:'product-detail',query:{pro:items.id}}">
                     <div class="hd">
                         <img :src="items.picture_url" :alt="items.goods_name" class="img">
                     </div>
@@ -126,7 +126,7 @@
         <!-- tab猜你喜欢 -->
         <div class="v-list" v-show="tabSel === 2">
             <div class="v-prolist">
-                <div class="v-pro" v-for="items of lovPros" v-link="{path:'product-detail',query:{shop:items.shop,pro:items.id}}">
+                <div class="v-pro" v-for="items of lovPros" v-link="{path:'product-detail',query:{pro:items.id}}">
                     <div class="hd">
                         <img :src="items.image" :alt="items.name" class="img">
                     </div>
@@ -152,7 +152,7 @@
         <!-- 机油产品 -->
         <!-- <div class="v-list">
             <div class="v-prolist">
-                <div class="v-pro" v-for="items of cat1Pros" v-link="{path:'product-detail',query:{shop:items.shop,pro:items.id}}">
+                <div class="v-pro" v-for="items of cat1Pros" v-link="{path:'product-detail',query:{pro:items.id}}">
                     <div class="hd">
                         <img :src="items.image" :alt="items.name" class="img">
                     </div>

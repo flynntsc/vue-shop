@@ -3,8 +3,8 @@
         <!-- 头部 -->
         <x-header :left-options="{showBack: false}" class="v-hd">
             卡车商城
-            <i class="iconfont v-back" slot="left">&#xe602;</i>
-            <i class="iconfont v-cart" slot="right">&#xe601;</i>
+            <i class="iconfont v-back" slot="left" @click="goback">&#xe602;</i>
+            <i class="iconfont v-cart" slot="right" v-link="{path:'cart'}">&#xe601;</i>
         </x-header>
 
         <!-- 主内容 -->
@@ -159,6 +159,10 @@ export default {
         })
     },
     methods: {
+        // 返回
+        goback() {
+            history.back()
+        },
         markFn(id, type) {
 
         },

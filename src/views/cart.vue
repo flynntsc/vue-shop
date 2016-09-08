@@ -3,14 +3,14 @@
         <!-- 头部 -->
         <x-header :left-options="{showBack: false}" class="v-hd">
             购物车
-            <i class="iconfont v-back" slot="left">&#xe602;</i>
+            <i class="iconfont v-back" slot="left" @click="goback">&#xe602;</i>
         </x-header>
 
         <div class="v-wrap">
-            <div class="v-cell">
+            <div class="v-cell" v-for="items of cartPros">
                 <div class="v-cellhd">
                     <label>
-                        <input type="checkbox" name="" id=""> 汇管车平台自营店
+                        <input type="radio" name="shop" id=""> {{items.hz_goods_mange.supplier_name}}
                     </label>
                 </div>
                 <div class="v-cellbd">
@@ -20,38 +20,21 @@
                         </label>
                     </div>
                     <div class="pro">
-                        <img src="http://temp.im/180x80" alt="">
+                        <img :src="items.picture_url" alt="">
                     </div>
                     <div class="box">
-                        <div class="name">米其林-XZE 高档绝无仅有卓多喝点开房大厦卡车载重轮胎全新正品</div>
-                        <div class="price">￥2499.00</div>
+                        <div class="name" v-link="{path:'product-detail',query:{pro:items.goods_id}}">{{items.hz_goods_mange.goods_name}}</div>
+                        <div class="price">￥{{items.hz_goods_mange.price_new || items.hz_goods_mange.current_price}}</div>
                         <div class="nums">
-                            <number2></number2>
-                        </div>
-                    </div>
-                </div>
-                <div class="v-cellbd">
-                    <div class="sel">
-                        <label>
-                            <input type="checkbox" name="" id="">
-                        </label>
-                    </div>
-                    <div class="pro">
-                        <img src="http://temp.im/80x80" alt="">
-                    </div>
-                    <div class="box">
-                        <div class="name">米其林-XZE 高档绝无仅有卓多喝点开房大厦卡车载重轮胎全新正品</div>
-                        <div class="price">￥2499.00</div>
-                        <div class="nums">
-                            <number2></number2>
+                            <number2 :value.sync="items.amount"></number2>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="v-cell">
+            <!-- <div class="v-cell">
                 <div class="v-cellhd">
                     <label>
-                        <input type="checkbox" name="" id=""> 汇管车平台自营店2222
+                        <input type="radio" name="shop" id=""> 汇管车平台自营店2222
                     </label>
                 </div>
                 <div class="v-cellbd">
@@ -88,16 +71,16 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <!-- 底部菜单 -->
         <div class="v-ft">
-            <div class="sel">
+            <!-- <div class="sel">
                 <label>
                     <input type="checkbox" name="" id=""> 全选
                 </label>
-            </div>
+            </div> -->
             <div class="total">合计：￥<span class="pri">0.00</span></div>
             <div class="buy">立即购买</div>
         </div>
@@ -111,6 +94,9 @@ import {
 
 import Number2 from '../components/x-number2/index.vue'
 
+function formatArr(arr) {
+    // 格式化为二维数组？？？
+}
 
 export default {
     components: {
@@ -119,34 +105,47 @@ export default {
     },
     data() {
         return {
-            // 店铺id
-            shop: '',
-            indexData: {
-                shop: '',
-                backgroundImage: '',
-                logo: '',
-                name: '',
-                sales: '',
-                total: '',
-                isSenior: false,
-                swiperList: [],
-                hotList: [],
-                newList: [],
-            }
+            // ajax获取数据
+            cartData: {
+                cartList: [{
+                    'id': '1222',
+                    'goods_id': 138,
+                    'picture_url': 'http://temp.im/100x100',
+                    'amount': 1,
+                    'hz_goods_mange': {
+                        'supplier_id': 14201,
+                        'supplier_name': '车队汇',
+                        'goods_name': '轮胎0933',
+                        'current_price': '999',
+                        'price_new': '999',
+                    }
+                }, {
+                    'id': '1222',
+                    'goods_id': 313,
+                    'picture_url': 'http://temp.im/100x100',
+                    'amount': 2,
+                    'hz_goods_mange': {
+                        'supplier_id': 19095,
+                        'supplier_name': '车队汇222',
+                        'goods_name': '壳牌机油1000',
+                        'current_price': '999',
+                        'price_new': '999',
+                    }
+                }],
+            },
+            // 获取后转换处理
+            cartPros: [],
         }
     },
     created() {
-        // 获取店铺id
-        this.shop = this.$route.query.shop || 0
-    },
-    ready() {
-        const url = `/api/shopping/shop-index.htm?shop=${this.shop}`
+        let url = `/api/shopping/shop_cart/show_shop_cart.htm`
         this.$http.get(url).then(res => {
-            if (res.ok) {
-                this.indexData = Object.assign({}, JSON.parse(res.data).rows)
-            }
+            let data = JSON.parse(res.data)
+            this.cartData = Object.assign({}, this.cartData, data)
+            this.cartPros = this.cartData.cartList
         })
     },
+    ready() {},
     methods: {
         // 返回
         goback() {

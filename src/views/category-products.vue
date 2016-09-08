@@ -2,7 +2,7 @@
     <!-- 头部 -->
     <x-header :left-options="{showBack: false}" class="v-catHd">
         {{categoryName}}
-        <i class="iconfont" slot="left">&#xe602;</i>
+        <i class="iconfont" slot="left" @click="goback">&#xe602;</i>
         <span slot="right" @click="filterClick">筛选</span>
     </x-header>
 
@@ -102,6 +102,10 @@ export default {
         })
     },
     methods: {
+        // 返回
+        goback() {
+            history.back()
+        },
         // tab切换显示-商品
         tabProsFn(n) {
             let num = n || 0,

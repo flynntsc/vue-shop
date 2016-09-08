@@ -2,7 +2,7 @@
     <!-- 头部 -->
     <x-header :left-options="{showBack: false}" class="v-ghd">
         {{isShowGet ? '已领取抵用券' : '未领取抵用券'}}
-        <i class="iconfont" slot="left">&#xe602;</i>
+        <i class="iconfont" slot="left" @click="goback">&#xe602;</i>
         <span slot="right" @click="showAllFn" v-show="!isShowGet">已领取</span>
         <span slot="right" @click="showAllFn" v-else>未领取</span>
     </x-header>
@@ -72,6 +72,10 @@ export default {
         })
     },
     methods: {
+        // 返回
+        goback() {
+            history.back()
+        },
         showAllFn() {
             this.isShowGet = !this.isShowGet
         },
