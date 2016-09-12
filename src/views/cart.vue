@@ -5,18 +5,17 @@
             购物车
             <i class="iconfont v-back" slot="left" @click="goback">&#xe602;</i>
         </x-header>
-
         <div class="v-wrap">
-            <div class="v-cell" v-for="items of cartPros" :class="{'v-cell-1' : $index === 0 || items.hz_goods_mange.supplier_id !== cartPros[$index - 1].hz_goods_mange.supplier_id}">
-                <div class="v-cellhd" v-if="$index === 0 || items.hz_goods_mange.supplier_id !== cartPros[$index - 1].hz_goods_mange.supplier_id">
+            <div class="v-cell" v-for="items of cartArrs" :class="{'v-cell-1' : $index === 0 || items.hz_goods_mange.supplier_id !== cartArrs[$index - 1].hz_goods_mange.supplier_id}">
+                <div class="v-cellhd" v-if="$index === 0 || items.hz_goods_mange.supplier_id !== cartArrs[$index - 1].hz_goods_mange.supplier_id">
                     <label>
-                        <input type="radio" name="shop" id="" @click="radioFn($index)" value="selected" v-model="items.selected"> {{items.hz_goods_mange.supplier_name}}
+                        <input type="radio" name="shop" id="" :value="items.hz_goods_mange.supplier_id" @click="radioFn($index)" v-model="items.selected"> {{items.hz_goods_mange.supplier_name}}
                     </label>
                 </div>
                 <div class="v-cellbd">
                     <div class="sel">
                         <label>
-                            <input type="checkbox" name="" id="" v-model="items.checked" @click="checkboxFn($index)">
+                            <input type="checkbox" name="" id="" v-model="items.checked" @click="checkboxFn($index,items.checked)">
                         </label>
                     </div>
                     <div class="pro">
@@ -32,24 +31,24 @@
                 </div>
             </div>
         </div>
-
         <!-- 底部菜单 -->
         <div class="v-ft">
-            <div class="sel">
+            <!-- <div class="sel">
                 <label>
-                    <input type="checkbox" name="" id=""> 全选
+                    <input type="checkbox" name="" id="" v-model="allSel"> 全选
                 </label>
-            </div>
-            <div class="total">合计：￥<span class="pri">{{cartSum}}</span></div>
-            <div class="buy" v-show="cartSum > 0" @click="goBuy">立即购买</div>
+            </div> -->
+            <div class="total">合计：￥<span class="pri">{{cartTotal}}</span></div>
+            <div class="buy" v-show="cartTotal > 0" @click="goBuy">立即购买</div>
             <div class="empty" v-else>请先选择</div>
         </div>
+        <toast :show.sync="checkMsg" type="warn" :time="1.5" width="12em">只能选择同个店铺商品</toast>
     </div>
 </template>
-
 <script>
 import {
     XHeader,
+    Toast,
 } from 'vux/src/components'
 
 import Number2 from '../components/x-number2/index.vue'
@@ -58,6 +57,7 @@ export default {
     components: {
         XHeader,
         Number2,
+        Toast,
     },
     data() {
         return {
@@ -69,11 +69,11 @@ export default {
                     'picture_url': 'http://temp.im/100x100',
                     'amount': 1,
                     'hz_goods_mange': {
-                        'supplier_id': 1,
+                        'supplier_id': 101,
                         'supplier_name': '车队汇',
-                        'goods_name': '轮胎0933',
-                        'current_price': '9929',
-                        'price_new': '999',
+                        'goods_name': '轮胎0001',
+                        'current_price': '100',
+                        'price_new': '10',
                     }
                 }, {
                     'id': '1222',
@@ -81,32 +81,35 @@ export default {
                     'picture_url': 'http://temp.im/100x100',
                     'amount': 2,
                     'hz_goods_mange': {
-                        'supplier_id': 2,
+                        'supplier_id': 102,
                         'supplier_name': '车队汇222',
                         'goods_name': '壳牌机油1000',
-                        'current_price': '9190',
-                        'price_new': '999',
+                        'current_price': '1000',
+                        'price_new': '500',
                     }
                 }, {
                     'id': '1222',
-                    'goods_id': 138,
+                    'goods_id': 139,
                     'picture_url': 'http://temp.im/100x100',
-                    'amount': 1,
+                    'amount': 3,
                     'hz_goods_mange': {
-                        'supplier_id': 1,
+                        'supplier_id': 101,
                         'supplier_name': '车队汇',
-                        'goods_name': '轮胎0933',
-                        'current_price': '423',
-                        'price_new': '391',
+                        'goods_name': '轮胎0002',
+                        'current_price': '200',
+                        'price_new': '100',
                     }
                 }],
             },
             // 获取后转换处理
-            cartPros: [],
+            cartArrs: [],
             // 选中的店铺id
-            shopSeled: '',
-            // 总价
-            cartSum: 0.00,
+            cartShop: '',
+            cartNums: '',
+            cartTotal: 0.00,
+
+            // 弹窗
+            checkMsg: false,
         }
     },
     ready() {
@@ -117,16 +120,31 @@ export default {
             // 遍历添加的属性
             let objSel = {
                 selected: '',
-                checked: false
+                checked: false,
             }
             this.cartData = Object.assign({}, this.cartData, data)
-            this.cartPros = this.cartData.cartList.sort((a, b) => a.hz_goods_mange.supplier_id - b.hz_goods_mange.supplier_id).map(v => Object.assign(v, objSel))
+            this.cartArrs = this.cartData.cartList.sort((a, b) => a.hz_goods_mange.supplier_id - b.hz_goods_mange.supplier_id).map(v => Object.assign({}, v, objSel))
         })
     },
     watch: {
-        // 监听数据并更改总价
-        cartPros(arr, oldarr) {
-            this.cartSum = arr.filter(v => v.checked === true).reduce((a, b) => a + b.amount * (b.hz_goods_mange.price_new || b.hz_goods_mange.current_price), 0)
+        // 监听选中的店铺->更改数组
+        cartShop(id) {
+            // this.cartArrs = this.cartArrs.map(v => {
+            //     v.checked = v.hz_goods_mange.supplier_id === id
+            //     return v
+            // })
+
+            this.cartArrs = this.cartArrs.map(v => {
+                v.selected = id
+                if (v.hz_goods_mange.supplier_id !== id) {
+                    v.checked = false
+                }
+                return v
+            })
+        },
+        // 监听选中的产品总数->影响总价
+        cartNums(n, m) {
+            this.cartTotal = this.cartArrs.filter(v => v.checked === true).reduce((a, b) => a + b.amount * (b.hz_goods_mange.price_new || b.hz_goods_mange.current_price), 0)
         },
     },
     methods: {
@@ -136,20 +154,29 @@ export default {
         },
         // 点击店铺单选按钮
         radioFn(i) {
-            this.shopSeled = this.cartPros[i].hz_goods_mange.supplier_id
-            console.dir(this.cartPros)
-            this.cartPros = this.cartPros.map(v => {
-                v.checked = v.hz_goods_mange.supplier_id === this.shopSeled
+            this.cartShop = this.cartArrs[i].hz_goods_mange.supplier_id
+            this.cartNums = this.cartArrs.map(v => {
+                v.checked = v.hz_goods_mange.supplier_id === this.cartShop
                 return v
-            })
+            }).filter(v => v.checked === true).reduce((a, b) => a + b.amount, 0)
         },
-        // 如何更改数据来改变状态？？？？
-        checkboxFn(i) {
-
+        // 如何更改多选框
+        checkboxFn(i, bool) {
+            let shopId = this.cartArrs[i].hz_goods_mange.supplier_id
+            if (shopId !== this.cartShop) {
+                this.cartShop = shopId
+            }
+            // 点击后的值=取反
+            this.cartArrs[i].checked = !bool
+            console.log(this.cartArrs[i].checked)
+            this.cartNums = this.cartArrs.filter(v => {
+                    return v.checked === true
+                }).reduce((a, b) => a + b.amount, 0)
+                // 数量相同时不变？？？
         },
-        // 更改数量-value非双向绑定嘛？？？？
+        // 更改数量 -> 选中数量
         numChange(i) {
-
+            this.cartNums = this.cartArrs.filter(v => v.checked === true).reduce((a, b) => a + b.amount, 0)
         },
         goBuy() {
 
