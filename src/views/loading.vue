@@ -1,7 +1,6 @@
 <template>
     <loading :show="isShow"></loading>
 </template>
-
 <script>
 import {
     Loading,

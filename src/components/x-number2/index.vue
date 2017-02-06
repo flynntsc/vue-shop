@@ -10,7 +10,7 @@ export default {
     props: {
         min: {
             type: Number,
-            default: 0,
+            default: 1,
         },
         max: {
             type: Number,
@@ -68,7 +68,6 @@ export default {
     }
 }
 </script>
-
 <style lang="scss">
 .vux-number-input {
     float: left;

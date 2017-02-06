@@ -12,7 +12,6 @@
             <i class="iconfont">&#xe601;</i>
         </div>
     </div>
-
     <!-- 广告图 -->
     <div class="v-banner">
         <div class="lban" style="background:url('http://temp.im/160x320') no-repeat 50% 50% / 100% auto"></div>
@@ -24,8 +23,6 @@
             </div>
         </div>
     </div>
-
-
     <!-- 菜单 -->
     <div class="v-nav">
         <flexbox class="vux-1px-tb" :gutter="0">
@@ -81,7 +78,6 @@
             </flexbox-item>
         </flexbox>
     </div>
-
     <!-- 热新好 -->
     <div class="v-pros">
         <tab>
@@ -141,7 +137,6 @@
             </div>
         </div>
     </div>
-
     <!-- 机油 -->
     <div class="v-pros">
         <!-- <tab>
@@ -167,9 +162,7 @@
             </div>
         </div> -->
     </div>
-
 </template>
-
 <script>
 import {
     XHeader,

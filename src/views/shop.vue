@@ -26,7 +26,6 @@
                 <div class="txt">分类</div>
             </div>
         </div>
-
         <div class="v-wrap">
             <!-- 店铺头部 -->
             <div class="v-shophd" :style="{backgroundImage:'url('+(indexData.shop_banner || imgFill)+')'}">
@@ -41,15 +40,12 @@
                 </div>
                 <div class="mark"></div>
             </div>
-
             <!-- 轮播图 -->
             <swiper :list="indexData.slideList" :auto="true" class="v-swiper"></swiper>
-
             <!-- 优惠劵 -->
-            <div class="v-coupons">
+            <!-- <div class="v-coupons">
                 <img src="../assets/images/_coupons.jpg" alt="" class="img">
-            </div>
-
+            </div> -->
             <!-- 商家推荐 -->
             <div class="v-list">
                 <div class="title">商家推荐</div>
@@ -89,7 +85,6 @@
             <!-- 所有商品 -->
             <div class="v-goall" v-link="{path:`shop-products?shop=${shop}`}">查看所有商品</div>
         </div>
-
         <!-- 底部菜单 -->
         <div class="v-fnav">
             <div class="it">店铺介绍</div>
@@ -97,7 +92,6 @@
         </div>
     </div>
 </template>
-
 <script>
 import {
     Swiper,

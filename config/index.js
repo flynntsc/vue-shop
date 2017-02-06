@@ -2,7 +2,7 @@
 var path = require('path')
 
 // 切换数据来源=本地虚拟/线上提供
-var isDev = 0
+var isDev = 1
 var configDev = {
     // proxy all requests starting with /api to jsonplaceholder
     '/api': {
@@ -14,14 +14,24 @@ var configDev = {
         }
     }
 }
+var targetUrl = [
+    'http://test.ihczd.com:9509/hczd-club', // 测试
+    'http://10.1.6.80:8088/hczd-club', // 标
+    'http://10.1.6.240:8080/hczd-club', // 永
+    'http://10.1.6.33:8080/hczd-club', // 王
+    'http://10.1.6.235:8080/hczd-club' //我
+][4]
 var configPro = {
     '/api': {
-        target: 'http://10.1.6.80:8088/hczd-club', //标
-        // target: 'http://10.1.6.242:8080/hczd-club', //王
-        // target: 'http://10.1.6.33:8080/hczd-club', //永
+        target: targetUrl,
         changeOrigin: true,
         pathRewrite: {}
-    }
+    },
+    '/client': {
+        target: targetUrl,
+        changeOrigin: true,
+        pathRewrite: {}
+    },
 }
 var proxyTable = isDev ? configDev : configPro
 
@@ -42,7 +52,7 @@ module.exports = {
     },
     dev: {
         env: require('./dev.env'),
-        port: 8000,
+        port: 8080,
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         proxyTable: proxyTable,

@@ -25,7 +25,7 @@
                         <div class="name" v-link="{path:'product-detail',query:{pro:items.goods_id}}">{{items.hz_goods_mange.goods_name}}</div>
                         <div class="price">￥{{items.hz_goods_mange.price_new || items.hz_goods_mange.current_price}}</div>
                         <div class="nums">
-                            <number2 :value.sync="items.amount" @on-change="numChange"></number2>
+                            <number2 :value.sync="items.amount" @on-change="numChange($index,items.amount)"></number2>
                         </div>
                     </div>
                 </div>
@@ -33,22 +33,15 @@
         </div>
         <!-- 底部菜单 -->
         <div class="v-ft">
-            <!-- <div class="sel">
-                <label>
-                    <input type="checkbox" name="" id="" v-model="allSel"> 全选
-                </label>
-            </div> -->
             <div class="total">合计：￥<span class="pri">{{cartTotal}}</span></div>
             <div class="buy" v-show="cartTotal > 0" @click="goBuy">立即购买</div>
             <div class="empty" v-else>请先选择</div>
         </div>
-        <toast :show.sync="checkMsg" type="warn" :time="1.5" width="12em">只能选择同个店铺商品</toast>
     </div>
 </template>
 <script>
 import {
     XHeader,
-    Toast,
 } from 'vux/src/components'
 
 import Number2 from '../components/x-number2/index.vue'
@@ -57,94 +50,91 @@ export default {
     components: {
         XHeader,
         Number2,
-        Toast,
     },
     data() {
         return {
             // ajax获取数据
             cartData: {
+                cartList: [],
+            },
+            // 获取后转换处理
+            cartArrs: [],
+            cartArrs2: [],
+            // 选中的店铺id
+            cartShop: '',
+            cartNums: '',
+            cartTotal: 0.00,
+        }
+    },
+    ready() {
+        const vm = this
+        let url = `/api/shopping/shop_cart/show_shop_cart.htm`
+        vm.$http.get(url).then(res => {
+            console.log(res)
+
+            // let data = JSON.parse(res.data)
+
+            // 临时虚拟数据
+            let data = {
                 cartList: [{
                     'id': '1222',
                     'goods_id': 138,
                     'picture_url': 'http://temp.im/100x100',
                     'amount': 1,
+                    'trans_type': '物流配送',
                     'hz_goods_mange': {
                         'supplier_id': 101,
-                        'supplier_name': '车队汇',
+                        'supplier_name': '车队汇供应商平台',
                         'goods_name': '轮胎0001',
                         'current_price': '100',
                         'price_new': '10',
+                        'ship_method': '到店服务,物流配送'
                     }
                 }, {
-                    'id': '1222',
+                    'id': '1223',
                     'goods_id': 313,
                     'picture_url': 'http://temp.im/100x100',
                     'amount': 2,
+                    'trans_type': '物流配送',
                     'hz_goods_mange': {
                         'supplier_id': 102,
-                        'supplier_name': '车队汇222',
+                        'supplier_name': '厦门夏商国企平台',
                         'goods_name': '壳牌机油1000',
                         'current_price': '1000',
                         'price_new': '500',
+                        'ship_method': '到店服务,物流配送'
                     }
                 }, {
-                    'id': '1222',
+                    'id': '1224',
                     'goods_id': 139,
                     'picture_url': 'http://temp.im/100x100',
                     'amount': 3,
+                    'trans_type': '物流配送',
                     'hz_goods_mange': {
                         'supplier_id': 101,
-                        'supplier_name': '车队汇',
+                        'supplier_name': '车队汇供应商平台',
                         'goods_name': '轮胎0002',
                         'current_price': '200',
                         'price_new': '100',
+                        'ship_method': '到店服务,物流配送'
                     }
                 }],
-            },
-            // 获取后转换处理
-            cartArrs: [],
-            // 选中的店铺id
-            cartShop: '',
-            cartNums: '',
-            cartTotal: 0.00,
-
-            // 弹窗
-            checkMsg: false,
-        }
-    },
-    ready() {
-        let url = `/api/shopping/shop_cart/show_shop_cart.htm`
-        this.$http.get(url).then(res => {
-            let data = JSON.parse(res.data)
+            }
 
             // 遍历添加的属性
             let objSel = {
-                selected: '',
-                checked: false,
+                selected: '', // 选中店铺id
+                checked: false, // 产品是否被选中
             }
-            this.cartData = Object.assign({}, this.cartData, data)
-            this.cartArrs = this.cartData.cartList.sort((a, b) => a.hz_goods_mange.supplier_id - b.hz_goods_mange.supplier_id).map(v => Object.assign({}, v, objSel))
+            vm.cartData = Object.assign({}, vm.cartData, data)
+            vm.cartArrs = vm.cartData.cartList.sort((a, b) => a.hz_goods_mange.supplier_id - b.hz_goods_mange.supplier_id).map(v => Object.assign({}, v, objSel))
         })
     },
     watch: {
-        // 监听选中的店铺->更改数组
-        cartShop(id) {
-            // this.cartArrs = this.cartArrs.map(v => {
-            //     v.checked = v.hz_goods_mange.supplier_id === id
-            //     return v
-            // })
-
-            this.cartArrs = this.cartArrs.map(v => {
-                v.selected = id
-                if (v.hz_goods_mange.supplier_id !== id) {
-                    v.checked = false
-                }
-                return v
-            })
-        },
-        // 监听选中的产品总数->影响总价
-        cartNums(n, m) {
-            this.cartTotal = this.cartArrs.filter(v => v.checked === true).reduce((a, b) => a + b.amount * (b.hz_goods_mange.price_new || b.hz_goods_mange.current_price), 0)
+        // 监听产品数组变化->更改总价
+        cartArrs() {
+            const vm = this
+            vm.cartTotal = vm.cartArrs.filter(v => v.checked === true).reduce((a, b) => a + b.amount * (b.hz_goods_mange.price_new || b.hz_goods_mange.current_price), 0)
         },
     },
     methods: {
@@ -154,32 +144,40 @@ export default {
         },
         // 点击店铺单选按钮
         radioFn(i) {
-            this.cartShop = this.cartArrs[i].hz_goods_mange.supplier_id
-            this.cartNums = this.cartArrs.map(v => {
-                v.checked = v.hz_goods_mange.supplier_id === this.cartShop
+            const vm = this
+            vm.cartShop = vm.cartArrs[i].hz_goods_mange.supplier_id
+            vm.cartArrs = vm.cartArrs.map(v => {
+                v.checked = v.hz_goods_mange.supplier_id === vm.cartShop
                 return v
-            }).filter(v => v.checked === true).reduce((a, b) => a + b.amount, 0)
+            })
         },
         // 如何更改多选框
         checkboxFn(i, bool) {
-            let shopId = this.cartArrs[i].hz_goods_mange.supplier_id
-            if (shopId !== this.cartShop) {
-                this.cartShop = shopId
-            }
+            const vm = this
+            let shopId = vm.cartArrs[i].hz_goods_mange.supplier_id
+            vm.cartShop = shopId
+
             // 点击后的值=取反
-            this.cartArrs[i].checked = !bool
-            console.log(this.cartArrs[i].checked)
-            this.cartNums = this.cartArrs.filter(v => {
-                    return v.checked === true
-                }).reduce((a, b) => a + b.amount, 0)
-                // 数量相同时不变？？？
+            vm.cartArrs[i].checked = !bool
+            vm.cartArrs = vm.cartArrs.map(v => {
+                v.selected = shopId
+                if (v.hz_goods_mange.supplier_id !== shopId) {
+                    v.checked = false
+                }
+                return v
+            })
         },
         // 更改数量 -> 选中数量
-        numChange(i) {
-            this.cartNums = this.cartArrs.filter(v => v.checked === true).reduce((a, b) => a + b.amount, 0)
+        numChange(i, num) {
+            const vm = this
+            vm.cartArrs = vm.cartArrs.map(v => v)
         },
         goBuy() {
-
+            const vm = this
+            let prolist
+            vm.cartArrs2 = vm.cartArrs.filter(v => v.checked)
+            prolist = JSON.stringify(vm.cartArrs2)
+            vm.$router.go('order?prolist=' + prolist)
         },
     }
 }

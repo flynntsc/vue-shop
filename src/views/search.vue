@@ -7,7 +7,6 @@
                 <search-cat @result-click="resultClick" @on-change="getResult" @del-history="delHistory" :results="results" :value.sync="searchVal" :cats="catsArr" :cats-val.sync="catsVal" :placeholder="searchPhr"></search-cat>
             </div>
         </div>
-
         <!-- 商品 -->
         <div class="v-prolist" v-show="catsVal === '商品'">
             <tab>
@@ -19,7 +18,6 @@
                 <products-list :proslist="prosList"></products-list>
             </div>
         </div>
-
         <!-- 店铺 -->
         <div class="v-shoplist" v-show="catsVal === '店铺'">
             <tab>
@@ -28,7 +26,7 @@
             </tab>
             <div class="v-sbd">
                 <div class="v-shop" v-for="items of shopList">
-                    <div class="v-shophd" v-link="{path:items.url}">
+                    <div class="v-shophd" v-link="{path:'shop',query:{supplierId:items.customer_id}}">
                         <div class="info">
                             <img :src="items.logo" :alt="items.name" class="img">
                             <div class="detail">
@@ -40,7 +38,7 @@
                             </div>
                         </div>
                         <div class="entry">
-                            <button class="weui_btn weui_btn_mini weui_btn_default weui_btn_plain_default btn" v-link="{path:items.url}">进入店铺</button>
+                            <button class="weui_btn weui_btn_mini weui_btn_default weui_btn_plain_default btn">进入店铺</button>
                         </div>
                     </div>
                     <div class="v-shopbd">
@@ -51,7 +49,6 @@
         </div>
     </div>
 </template>
-
 <script>
 import {
     Search,
@@ -93,7 +90,6 @@ export default {
         // 根据url参数请求相应数据
         let getRes = (url, sort, type = 0) => {
             this.$http.get(`/api/shopping/${url}?keyWords=${this.searchVal}&sort=${sort}`).then(res => {
-                console.log(sort)
                 if (res.ok) {
                     let rows = JSON.parse(res.data).rows;
                     !type ? this.prosList = rows : this.shopList = rows
@@ -202,7 +198,6 @@ export default {
         },
         // tab切换显示-商品
         tabProsFn(n) {
-            console.log(n)
             let num = n || 0,
                 arg = '',
                 url = ''
@@ -216,12 +211,12 @@ export default {
             this.tabProsNum = num
             url = `/api/shopping/productSearch.htm?keyWords=${this.searchVal}&sort=${num + arg}`
             this.$http.get(url).then(res => {
-                console.log(res.url)
                 if (res.ok) {
                     this.prosList = JSON.parse(res.data).rows
                 }
             })
         },
+        // tab切换显示-店铺
         tabShopFn(n) {
             let num = n || 0,
                 url = ''

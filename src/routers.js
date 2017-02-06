@@ -1,6 +1,6 @@
 'use strict'
 
-export default function (router) {
+export default function(router) {
     router.map({
         // 截取判断再跳转页面
         '/': {
